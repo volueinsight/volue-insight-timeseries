@@ -1,7 +1,7 @@
 # encoding: utf-8
 #
 import os, sys
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 # Get current version from the VERSION file
@@ -11,16 +11,14 @@ with open(os.path.join(here, 'VERSION')) as fv:
 install_requires = [
     'requests >= 2.18',
     'sseclient-py >= 1.7',
-    'pytz',
-    'pandas >= 0.21',
+    'pandas >= 1.5.0',
     'future >= 0.16',
 ]
-if sys.version_info < (3,):
-    install_requires.append('configparser >= 3.5')
 
 setup(
     name='wapi-python',
-    packages=['wapi'],
+    python_requires='>=3.9',
+    packages=find_packages(),
     install_requires=install_requires,
     tests_require=[
         'pytest',

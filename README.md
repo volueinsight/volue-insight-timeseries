@@ -28,6 +28,23 @@ Start a terminal (a shell) and use the following command
 pip install -U volue-insight-timeseries
 ```
 
+### Pin this package
+We strongly recommend to pin your dependency on our package, since we will do
+changes to the package as we introduce new features, fix issues etc. See example
+below. At least make sure you lock down the major version in your
+requirements.txt file in order to prevent your code to break when we do
+breaking changes.
+
+```bash
+# your requirements.txt
+
+volue-insight-timeseries==1.0.0 # Good
+volue-insight-timeseries # Bad
+```
+
+We follow Semantic Versioning principles to communicate the type of change
+from one version to the next, together with release notes.
+
 ## Copyright (MIT License)
 
 Copyright (c) 2018-2022 Volue Insight AS

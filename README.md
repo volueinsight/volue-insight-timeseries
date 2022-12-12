@@ -1,13 +1,13 @@
-# wapi-python
-Wattsight API python library
+# volue-insight-timeseries
+Volue Insight API python library for working with timeseries
 
 This library is meant as a simple toolkit for working with data from
-https://api.wattsight.com/ (or equivalent services).  Note that access
+https://api.volueinsight.com/ (or equivalent services).  Note that access
 is based on some sort of login credentials, this library is not all
-that useful unless you have a valid Wattsight account.
+that useful unless you have a valid Volue Insight account.
 
-The library is tested against both Python 2.7 and Python 3.6,
-we recommend using Python 3.
+The library is tested against Python 3.9, 3.10 and 3.11 - we recommend using 
+the latest Python version.
 
 
 ## Documentation
@@ -20,17 +20,17 @@ is hosted on Read the Docs.
 
 ## Installation
 
-You can simply install/update the latest version of Wattsight API python
+You can simply install/update the latest version of Volue Insight API python
 library with pip.
 Start a terminal (a shell) and use the following command
 
 ```bash
-pip install -U wapi-python
+pip install -U volue-insight-timeseries
 ```
 
 ## Copyright (MIT License)
 
-Copyright (c) 2018-2019 Wattsight AS
+Copyright (c) 2018-2022 Volue Insight AS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

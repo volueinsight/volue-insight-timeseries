@@ -1,5 +1,5 @@
 # volue-insight-timeseries
-Volue Insight API python library for working with timeseries
+Volue Insight API python library for working with timeseries.
 
 This library is meant as a simple toolkit for working with data from
 https://api.volueinsight.com/ (or equivalent services).  Note that access
@@ -44,6 +44,19 @@ volue-insight-timeseries # Bad
 
 We follow Semantic Versioning principles to communicate the type of change
 from one version to the next, together with release notes.
+
+## Migrating from wapi-python
+If you previously have used wapi-python, you should switch to use this package
+going forward. We will not add any new features to wapi-python, it is only in 
+the event of a severe bug that we will do any changes to it.
+
+These are the steps you will have to do in order to successfully
+make the switch. 
+
+* Use Python 3.9, 3.10 or 3.11
+* Use Pandas 1.5.0 or newer
+* Use ZoneInfo, not pytz for handling time zone information
+
 
 ## Copyright (MIT License)
 

@@ -2,9 +2,9 @@
 Volue Insight API python library for working with timeseries.
 
 This library is meant as a simple toolkit for working with data from
-https://api.volueinsight.com/ (or equivalent services).  Note that access
-is based on some sort of login credentials, this library is not all
-that useful unless you have a valid Volue Insight account.
+https://api.volueinsight.com/ (or equivalent services). Note that access
+is based on having a valid Volue Insight account. Please contact
+sales.insight@volue.com in order to get a trial account.
 
 The library is tested against Python 3.9, 3.10 and 3.11 - we recommend using 
 the latest Python version.
@@ -42,8 +42,9 @@ volue-insight-timeseries==1.0.0 # Good
 volue-insight-timeseries # Bad
 ```
 
-We follow Semantic Versioning principles to communicate the type of change
-from one version to the next, together with release notes.
+We follow [Semantic Versioning](https://semver.org/spec/v2.0.0-rc.2.html)
+principles to communicate the type of change from one version to the next,
+together with [release notes](https://github.com/volueinsight/volue-insight-timeseries/releases).
 
 ## Migrating from wapi-python
 If you previously have used wapi-python, you should switch to use this package

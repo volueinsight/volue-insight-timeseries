@@ -4,7 +4,7 @@ weather forecast and the GFS00 weather forecasts with the Actual PV production.
 The comparison can be performed for any region
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -16,8 +16,8 @@ my_config_file = 'path/to/your/config.ini'
 region = 'de'
 ############################################
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # Define yesterday
 yesterday = pd.Timestamp.now().floor('D') - pd.Timedelta(days=1)

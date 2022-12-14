@@ -4,7 +4,7 @@ Have a look at the documentation for further information:
 https://wattsight-wapi-python.readthedocs-hosted.com/en/latest/index.html
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -14,8 +14,8 @@ my_config_file = 'path/to/your/config.ini'
 ############################################
 
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 
 # define curve name to read, in this case temperature forecast for Germany

@@ -6,8 +6,8 @@ set -e
 # Setup and test parameters etc.
 #
 
-REPO='wapi-python'
-SRCDIR='wapi'
+REPO='volue-insight-timeseries'
+SRCDIR='volue_insight_timeseries'
 VERSION=$(<VERSION)
 RELEASE="v$VERSION"
 PYVERSION=$(grep ^VERSION $SRCDIR/__init__.py | awk '{print $5}' | tr -d "'")
@@ -71,6 +71,6 @@ echo "Release to $PYPI_INDEX."
 rm -rf dist
 python setup.py sdist bdist_wheel
 echo "PYPI release: setup.py completed"
-twine upload --verbose --repository $PYPI_INDEX dist/wapi-python-$VERSION.tar.gz dist/wapi_python-$VERSION-*.whl
+twine upload --verbose --repository $PYPI_INDEX dist/volue-insight-timeseries-$VERSION.tar.gz dist/volue_insight_timeseries-$VERSION-*.whl
 
 echo "Released successfully"

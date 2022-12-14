@@ -8,7 +8,7 @@ Residual Load: https://app.wattsight.com/#tab/power/109/2
 The pages show the latest forecasts compared to actual values and normals
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
@@ -55,8 +55,8 @@ func = 'AVERAGE'
 ## Get the data
 ###############
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # get current dates and timeranges to get data
 now = pd.Timestamp.now()

@@ -1,20 +1,20 @@
-# Wattsight API python library usage example
-An introductory example of using Wattsight API python library for searching, fetching, and plotting Wattsight data series.
+# Volue Insight API python library usage example
+An introductory example of using Volue Insight API python library for searching, fetching, and plotting Volue Insight data series.
 A number of use cases is presented in order to introduce different data structures.
 
 ## Dependencies
 
-[Wattsight API python library](https://github.com/wattsight/wapi-python/)   
+[Volue Insight API python library](https://github.com/wattsight/wapi-python/)   
 [Jupyter (iPython) Notebooks](http://jupyter.org/)   
 [Pandas Data Analysis library](http://pandas.pydata.org/)   
 [Plotly Charting library](https://plot.ly/)   
 
-## Installation of Wattsight API python library
+## Installation of Volue Insight API python library
 
 1. Using pip
 
 	```command
-	pip install -U wapi-python
+	pip install -U volue-insight-timeseries
 	```
 
 ## Implementation
@@ -25,7 +25,7 @@ Complete working code can be found in the attached Jupyter Notebook file.
 	This requires having an OAuth client, which can be created at https://auth.volueinsight.com/account/oauth-clients.
 
 	```python
-	>>> session = wapi.Session(client_id='client id', client_secret='client secret')
+	>>> session = volue_insight_timeseries.Session(client_id='client id', client_secret='client secret')
 	```
 
 2. Search curves by meta data.

@@ -3,7 +3,7 @@ This example shows an approach to downloading long time series
 in a safe but efficient way.  Typically used for getting long normals.
 """
 
-import wapi
+import volue_insight_timeseries
 from datetime import timedelta
 from dateutil.parser import parse
 from zoneinfo import ZoneInfo
@@ -14,8 +14,8 @@ import time
 my_config_file = 'path/to/your/config.ini'
 ############################################
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # As an example, we read the wind production normals
 # for some regions.  These are long series, we cannot

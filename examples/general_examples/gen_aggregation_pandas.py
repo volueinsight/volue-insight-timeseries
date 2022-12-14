@@ -3,11 +3,11 @@ This simple example reads data from an TIME_SERIES curve and aggregates it
 using pandas.
 This example shows the same results as the TIME_SERIES aggregation
 example, where the data is aggregated in the backend:
-https://github.com/wattsight/wapi-python/blob/master/examples/Timeseries_curve_examples/ts_aggregation.py
+https://github.com/volueinsight/volue-insight-timeseries/blob/master/examples/Timeseries_curve_examples/ts_aggregation.py
 Have a look at the pandas documentation for further information:
 https://wattsight-wapi-python.readthedocs-hosted.com/en/latest/index.html
 """
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -17,14 +17,14 @@ my_config_file = 'path/to/your/config.ini'
 ############################################
 
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # Define start and end time
 # start_date
 start_date = pd.Timestamp('2018-6-1 00:00')
 # end_date
-end_date =  pd.Timestamp('2018-6-8 00:00')
+end_date = pd.Timestamp('2018-6-8 00:00')
 
 # define curve name to read, in this case temperature for Germany
 curve_name = 'tt de con °c cet min15 s'

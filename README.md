@@ -55,7 +55,7 @@ make the switch.
 
 * Use Python 3.9, 3.10 or 3.11
 * Use Pandas 1.5.0 or newer
-* Use ZoneInfo, not pytz for handling time zone information
+* Use [zoneinfo](https://docs.python.org/3/library/zoneinfo.html), not pytz for handling time zone information
 
 
 ## Copyright (MIT License)

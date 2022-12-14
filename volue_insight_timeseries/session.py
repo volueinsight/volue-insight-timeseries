@@ -59,7 +59,7 @@ class Session(object):
 
     Returns
     -------
-    session: :class:`wapi.session.Session` object
+    session: :class:`volue_insight_timeseries.session.Session` object
 
     """
 
@@ -132,10 +132,10 @@ class Session(object):
         -------
         curve object
             Curve objects, can be one of:
-            :class:`~wapi.curves.TimeSeriesCurve`,
-            :class:`~wapi.curves.TaggedCurve`,
-            :class:`~wapi.curves.InstanceCurve`,
-            :class:`~wapi.curves.TaggedInstanceCurve`.
+            :class:`~volue_insight_timeseries.curves.TimeSeriesCurve`,
+            :class:`~volue_insight_timeseries.curves.TaggedCurve`,
+            :class:`~volue_insight_timeseries.curves.InstanceCurve`,
+            :class:`~volue_insight_timeseries.curves.TaggedInstanceCurve`.
         """
         if id is not None:
             warnings.warn("Looking up a curve by ID will be removed in the future.", FutureWarning, stacklevel=2)
@@ -158,10 +158,10 @@ class Session(object):
         This function searches for curves that matches the given search
         parameters and returns a list of 0 or more curve objects.
         A curve object can be a
-        :class:`~wapi.curves.TimeSeriesCurve`,
-        :class:`~wapi.curves.TaggedCurve`,
-        :class:`~wapi.curves.InstanceCurve` or a
-        :class:`~wapi.curves.TaggedInstanceCurve` object.
+        :class:`~volue_insight_timeseries.curves.TimeSeriesCurve`,
+        :class:`~volue_insight_timeseries.curves.TaggedCurve`,
+        :class:`~volue_insight_timeseries.curves.InstanceCurve` or a
+        :class:`~volue_insight_timeseries.curves.TaggedInstanceCurve` object.
 
         The search will return those curves matching all supplied parameters
         (logical AND). For most parameters, a list of values may be supplied.
@@ -190,62 +190,62 @@ class Session(object):
         commodity: str or list of str
             search for curves that match the given ``commodity`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_commodities`
+            :meth:`volue_insight_timeseries.session.Session.get_commodities`
 
         category: str or list of str
             search for curves that match the given ``category`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_categories`
+            :meth:`volue_insight_timeseries.session.Session.get_categories`
 
         area: str or list of str
             search for curves that match the given ``area`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_areas`
+            :meth:`volue_insight_timeseries.session.Session.get_areas`
 
         station: str or list of str
             search for curves that match the given ``station`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_stations`
+            :meth:`volue_insight_timeseries.session.Session.get_stations`
 
         source: str or list of str
             search for curves that match the given ``source`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_sources`
+            :meth:`volue_insight_timeseries.session.Session.get_sources`
 
         scenario: str or list of str
             search for curves that match the given ``scenario`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_scenarios`
+            :meth:`volue_insight_timeseries.session.Session.get_scenarios`
 
         unit: str or list of str
             search for curves that match the given ``unit`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_units`
+            :meth:`volue_insight_timeseries.session.Session.get_units`
 
         time_zone: str or list of str
             search for curves that match the given ``time_zone`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_time_zones`
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`
 
         version: str or list of str
             search for curves that match the given ``version`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_versions`
+            :meth:`volue_insight_timeseries.session.Session.get_versions`
 
         frequency: str or list of str
             search for curves that match the given ``frequency`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_frequencies`
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`
 
         data_type: str or list of str
             search for curves that match the given ``data_type`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_data_types`
+            :meth:`volue_insight_timeseries.session.Session.get_data_types`
 
         curve_state: str or list of str
             search for curves that match the given ``curve_state`` attribute.
             Get valid values for this attribute with
-            :meth:`wapi.session.Session.get_curve_state`
+            :meth:`volue_insight_timeseries.session.Session.get_curve_state`
 
         modified_since: datestring, pandas.Timestamp or datetime.datetime
             only return curves that where modified after given datetime.
@@ -257,10 +257,10 @@ class Session(object):
         -------
         curves: list
             list of curve objects, can be one of:
-            :class:`~wapi.curves.TimeSeriesCurve`,
-            :class:`~wapi.curves.TaggedCurve`,
-            :class:`~wapi.curves.InstanceCurve`,
-            :class:`~wapi.curves.TaggedInstanceCurve`.
+            :class:`~volue_insight_timeseries.curves.TimeSeriesCurve`,
+            :class:`~volue_insight_timeseries.curves.TaggedCurve`,
+            :class:`~volue_insight_timeseries.curves.InstanceCurve`,
+            :class:`~volue_insight_timeseries.curves.TaggedInstanceCurve`.
         """
         search_terms = {
             'query': query,

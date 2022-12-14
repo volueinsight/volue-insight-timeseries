@@ -69,8 +69,8 @@ class TS(object):
         self.issue_date = issue_date
         self.curve_type = curve_type
         self.points = points
-        #
-        # input_dict is the json dict from WAPI
+
+        # input_dict is the json dict from the API
         if input_dict is not None:
             for k, v in input_dict.items():
                 setattr(self, k, v)
@@ -108,7 +108,8 @@ class TS(object):
         return ' '.join(attrs)
 
     def to_pandas(self, name=None):
-        """ Converting :class:`wapi.util.TS` object to a pandas.Series object
+        """ Converting :class:`volue_insight_timeseries.util.TS` object
+        to a pandas.Series object
 
         Parameters
         ----------
@@ -137,7 +138,7 @@ class TS(object):
 
     @staticmethod
     def from_pandas(pd_series):
-        # Clean up some of the more common Pandas/Wapi problems
+        # Clean up some of the more common Pandas/api problems
         pd_series = pd_series.astype(np.float64)
         pd_series.replace({np.nan: None}, inplace=True)
 
@@ -169,11 +170,12 @@ class TS(object):
 
     @staticmethod
     def sum(ts_list, name):
-        """ calculate the sum of a given list of :class:`wapi.util.TS` objects
+        """ calculate the sum of a given list
+        of :class:`volue_insight_timeseries.util.TS` objects
 
-        Returns a :class:`~wapi.util.TS` (:class:`wapi.util.TS`) object that is
-        the sum of a list of
-        TS objects with the given name.
+        Returns a :class:`~volue_insight_timeseries.util.TS`
+        (:class:`volue_insight_timeseries.util.TS`) object that is
+        the sum of a list of TS objects with the given name.
 
         Parameters
         ----------
@@ -183,7 +185,7 @@ class TS(object):
             Name of the returned TS object.
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         df = _ts_list_to_dataframe(ts_list)
         return _generated_series_to_TS(df.sum(axis=1), name)
@@ -192,9 +194,8 @@ class TS(object):
     def mean(ts_list, name):
         """ calculate the mean of a given list of TS objects
 
-        Returns a TS (:class:`wapi.util.TS`) object that is
-        the mean of a list of
-        TS objects with the given name.
+        Returns a TS (:class:`volue_insight_timeseries.util.TS`) object that is
+        the mean of a list of TS objects with the given name.
 
         Parameters
         ----------
@@ -204,7 +205,7 @@ class TS(object):
             Name of the returned TS object.
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         df = _ts_list_to_dataframe(ts_list)
         return _generated_series_to_TS(df.mean(axis=1), name)
@@ -213,9 +214,8 @@ class TS(object):
     def median(ts_list, name):
         """ calculate the median of a given list of TS objects
 
-        Returns a TS (:class:`wapi.util.TS`) object that is
-        the median of a list of
-        TS objects with the given name.
+        Returns a TS (:class:`volue_insight_timeseries.util.TS`) object that is
+        the median of a list of TS objects with the given name.
 
         Parameters
         ----------
@@ -225,7 +225,7 @@ class TS(object):
             Name of the returned TS object.
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         df = _ts_list_to_dataframe(ts_list)
         return _generated_series_to_TS(df.median(axis=1), name)
@@ -246,7 +246,8 @@ def _ts_list_to_dataframe(ts_list):
 
 def tags_to_DF(tagged_list):
     """
-    Given a list of tagged series/instances, create a DataFrame with the tag of each as column name
+    Given a list of tagged series/instances, create a DataFrame with the tag of
+    each as column name
     """
     return pd.DataFrame({s.tag: s.to_pandas() for s in tagged_list})
 

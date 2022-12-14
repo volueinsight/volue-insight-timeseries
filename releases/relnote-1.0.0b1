@@ -1,0 +1,4 @@
+Improvements relative to wapi-python 0.7.9
+
+Add support for reading timeseries data beyond 2038, by using zoneinfo instead
+of pytz.

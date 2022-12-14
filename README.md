@@ -1,10 +1,10 @@
 # volue-insight-timeseries
-Volue Insight API python library for working with timeseries
+Volue Insight API python library for working with timeseries.
 
 This library is meant as a simple toolkit for working with data from
-https://api.volueinsight.com/ (or equivalent services).  Note that access
-is based on some sort of login credentials, this library is not all
-that useful unless you have a valid Volue Insight account.
+https://api.volueinsight.com/ (or equivalent services). Note that access
+is based on having a valid Volue Insight account. Please contact
+sales.insight@volue.com in order to get a trial account.
 
 The library is tested against Python 3.9, 3.10 and 3.11 - we recommend using 
 the latest Python version.
@@ -27,6 +27,37 @@ Start a terminal (a shell) and use the following command
 ```bash
 pip install -U volue-insight-timeseries
 ```
+
+### Pin this package
+We strongly recommend to pin your dependency on our package, since we will do
+changes to the package as we introduce new features, fix issues etc. See example
+below. At least make sure you lock down the major version in your
+requirements.txt file in order to prevent your code to break when we do
+breaking changes.
+
+```bash
+# your requirements.txt
+
+volue-insight-timeseries==1.0.0 # Good
+volue-insight-timeseries # Bad
+```
+
+We follow [Semantic Versioning](https://semver.org/spec/v2.0.0-rc.2.html)
+principles to communicate the type of change from one version to the next,
+together with [release notes](https://github.com/volueinsight/volue-insight-timeseries/releases).
+
+## Migrating from wapi-python
+If you previously have used wapi-python, you should switch to use this package
+going forward. We will not add any new features to wapi-python, it is only in 
+the event of a severe bug that we will do any changes to it.
+
+These are the steps you will have to do in order to successfully
+make the switch. 
+
+* Use Python 3.9, 3.10 or 3.11
+* Use Pandas 1.5.0 or newer
+* Use [zoneinfo](https://docs.python.org/3/library/zoneinfo.html), not pytz for handling time zone information
+
 
 ## Copyright (MIT License)
 

@@ -1,5 +1,5 @@
 #
-# Wattsight API access library
+# Volue Insight API access library
 #
 
 from .session import Session

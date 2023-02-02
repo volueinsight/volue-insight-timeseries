@@ -5,17 +5,17 @@ selected instances. Have a look at the documentation for further information:
 https://wattsight.com/docs/api/api-absolute-relative-forecast.html?highlight=relative
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
 
 ############################################
 # Insert the path to your config file here!
 my_config_file = 'path/to/your/config.ini'
-# Create a session to connect to Wattsight Database.
-session = wapi.Session(config_file=my_config_file)
+# Create a session to connect to Volue Insight API.
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 # or
-#session = wapi.Session(client_id='client id', client_secret='client secret')
+#session = volue_insight_timeseries.Session(client_id='client id', client_secret='client secret')
 ############################################
 
 # Define curve name to read, in this example it is the wind production forecast based on

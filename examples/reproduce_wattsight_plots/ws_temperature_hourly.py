@@ -3,7 +3,7 @@ This example shows how to reproduce temperature forecast plot for any region:
 https://app.wattsight.com/#tab/power/245/2
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
@@ -43,8 +43,8 @@ func = 'AVERAGE'
 ## Get the data
 ###############
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # get current dates and timeranges to get data
 now = pd.Timestamp.now()

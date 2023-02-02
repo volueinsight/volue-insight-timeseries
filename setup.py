@@ -1,6 +1,6 @@
 # encoding: utf-8
 #
-import os, sys
+import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -16,7 +16,7 @@ install_requires = [
 ]
 
 setup(
-    name='wapi-python',
+    name='volue-insight-timeseries',
     python_requires='>=3.9',
     packages=find_packages(),
     install_requires=install_requires,

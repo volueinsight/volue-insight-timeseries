@@ -74,7 +74,8 @@ class TimeSeriesCurve(BaseCurve):
         the curve directly in the API using filter and aggregation functions.
         This can be used with great effect to reduce the amount of data
         retrieved if the full set of details is not needed.
-        All time series are returned in a :class:`wapi.util.TS` object.
+        All time series are returned
+        in a :class:`volue_insight_timeseries.util.TS` object.
 
         Parameters
         ----------
@@ -108,23 +109,23 @@ class TimeSeriesCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters`.
+            :meth:`volue_insight_timeseries.session.Session.get_filters`.
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions`.
+            :meth:`volue_insight_timeseries.session.Session.get_functions`.
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function. You can find the valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -132,7 +133,7 @@ class TimeSeriesCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
 
         args = []
@@ -169,11 +170,12 @@ class TaggedCurve(BaseCurve):
         weather data.
 
         This function fetches data for one or multiple given tags and returns
-        a list of :class:`wapi.util.TS` objects.
-        It also possible to process the curve directly in the API using filter
+        a list of :class:`volue_insight_timeseries.util.TS` objects.
+        It is also possible to process the curve directly in the API using filter
         and aggregation functions. This can be used with great effect to reduce
         the amount of data retrieved if the full set of details is not needed.
-        All time series are returned in a :class:`wapi.util.TS` object.
+        All time series are returned
+        in a :class:`volue_insight_timeseries.util.TS` object.
 
         Parameters
         ----------
@@ -181,7 +183,8 @@ class TaggedCurve(BaseCurve):
         tag: str or list, optional
             tag or tags to get the data for. If omitted, the default
             tag is returned. If a list of multiple tags is given, the function
-            will return a list with a :class:`wapi.util.TS` object for each tag.
+            will return a list with
+            a :class:`volue_insight_timeseries.util.TS` object for each tag.
 
         data_from: time-stamp, optional
             start date (and time) of data to be fetched. If not given, the start
@@ -212,24 +215,24 @@ class TaggedCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -237,7 +240,7 @@ class TaggedCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         unwrap = False
         if tag is None:
@@ -272,12 +275,13 @@ class InstanceCurve(BaseCurve):
         and contains a time series for each issue_date of the forecast.
         This function returns a list of time series for all available
         issue_dates (within a given period, if specified)
-        as a a list of :class:`wapi.util.TS` objects.
+        as a a list of :class:`volue_insight_timeseries.util.TS` objects.
         It also possible to process
         the curve directly in the API using filter and aggregation functions.
         This can be used with great effect to reduce the amount of data
         retrieved if the full set of details is not needed.
-        By default this function returns the :class:`wapi.util.TS` objects
+        By default this function returns
+        the :class:`volue_insight_timeseries.util.TS` objects
         without data, which can be change by setting the "with_data" argument
         to True.
 
@@ -299,7 +303,8 @@ class InstanceCurve(BaseCurve):
             "issue_date_from".
 
         issue_dates: list of time-stamps, optional
-            List of timestamps to return :class:`wapi.util.TS` objects for.
+            List of timestamps
+            to return :class:`volue_insight_timeseries.util.TS` objects for.
             The time-stamps can be provided in the same types as
             "issue_date_from".
 
@@ -317,7 +322,8 @@ class InstanceCurve(BaseCurve):
             Format is 'HH', 'HH:mm' or 'HH:mm:ss'.
 
         with_data: bool, optional
-            If with_data is False, the returned  :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -345,24 +351,24 @@ class InstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -373,7 +379,7 @@ class InstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
@@ -409,7 +415,8 @@ class InstanceCurve(BaseCurve):
         An INSTANCE curve typically represents forecast,
         and contains a time series for each issue_date of the forecast.
         This function returns the time series for a specified issue_date
-        as a :class:`wapi.util.TS` object. It also possible to process
+        as a :class:`volue_insight_timeseries.util.TS` object.
+        It is also possible to process
         the curve directly in the API using filter and aggregation functions.
         This can be used with great effect to reduce the amount of data
         retrieved if the full set of details is not needed.
@@ -426,7 +433,8 @@ class InstanceCurve(BaseCurve):
             * datetime.datetime object
 
         with_data: bool, optional
-            If with_data is False, the returned  :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -454,24 +462,24 @@ class InstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -479,7 +487,7 @@ class InstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
@@ -504,7 +512,8 @@ class InstanceCurve(BaseCurve):
         and contains a time series for each issue_date of the forecast.
         This function returns the time series for the latest available
         issue_date (within a given period, if specified)
-        as a :class:`wapi.util.TS` object. It also possible to process
+        as a :class:`volue_insight_timeseries.util.TS` object.
+        It is also possible to process
         the curve directly in the API using filter and aggregation functions.
         This can be used with great effect to reduce the amount of data
         retrieved if the full set of details is not needed.
@@ -533,7 +542,8 @@ class InstanceCurve(BaseCurve):
             "issue_date_from".
 
         with_data: bool, optional
-            If with_data is False, the returned  :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -561,24 +571,24 @@ class InstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -586,7 +596,7 @@ class InstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
@@ -614,7 +624,7 @@ class InstanceCurve(BaseCurve):
         instances so that the data date is issue_date + data_offset.
         If the data frequency is higher than the frequency of the selected
         instances, a range of data values from each instance will be used.
-        Similarly if the issue frequency is higher than the data frequency,
+        Similarly, if the issue frequency is higher than the data frequency,
         the same data date will be used from several instances.
 
         Parameters allow control of the set of instances used and how they
@@ -688,24 +698,24 @@ class InstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -713,7 +723,7 @@ class InstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         args = [util.make_arg('data_offset', '{}'.format(data_offset))]
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
@@ -763,7 +773,7 @@ class InstanceCurve(BaseCurve):
             returned for those instances whose issue_date is compatible
             with issue_frequency.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         issue_date_from: time-stamp, optional
             The start of the timerange used to select instances.
@@ -777,7 +787,7 @@ class InstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         args = [util.make_arg('data_date', data_date)]
         if issue_frequency is not None:
@@ -818,13 +828,14 @@ class TaggedInstanceCurve(BaseCurve):
 
         This function returns a list of time series for all available
         issue_dates (within a given period, if specified) and tags (from a
-        given list of tags, if specified) as a a list of :class:`wapi.util.TS`
-        objects.
+        given list of tags, if specified) as
+        a list of :class:`volue_insight_timeseries.util.TS` objects.
 
-        It also possible to process the curve directly in the API using filter
+        It is also possible to process the curve directly in the API using filter
         and aggregation functions. This can be used with great effect to reduce
         the amount of data retrieved if the full set of details is not needed.
-        By default this function returns the :class:`wapi.util.TS` objects
+        By default, this function returns
+        the :class:`volue_insight_timeseries.util.TS` objects
         without data, which can be change by setting the "with_data" argument
         to True.
 
@@ -851,7 +862,8 @@ class TaggedInstanceCurve(BaseCurve):
             "issue_date_from".
 
         issue_dates: list of time-stamps, optional
-            List of timestamps to return :class:`wapi.util.TS` objects for.
+            List of timestamps to
+            return :class:`volue_insight_timeseries.util.TS` objects for.
             The time-stamps can be provided in the same types as
             "issue_date_from".
 
@@ -869,7 +881,8 @@ class TaggedInstanceCurve(BaseCurve):
             Format is 'HH', 'HH:mm' or 'HH:mm:ss'.
 
         with_data: bool, optional
-            If with_data is False, the returned :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -897,24 +910,24 @@ class TaggedInstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -925,7 +938,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
@@ -967,8 +980,9 @@ class TaggedInstanceCurve(BaseCurve):
         typical use case for TAGGED INSTANCE curves.
 
         This function returns a time series for the combinations of a specified
-        issue_date and all given tags as a lit of :class:`wapi.util.TS` objects.
-        It also possible to process the curve directly in the API using filter
+        issue_date and all given tags as
+        a list of :class:`volue_insight_timeseries.util.TS` objects.
+        It is also possible to process the curve directly in the API using filter
         and aggregation functions. This can be used with great effect to reduce
         the amount of data retrieved if the full set of details is not needed.
 
@@ -987,10 +1001,12 @@ class TaggedInstanceCurve(BaseCurve):
         tag: str or list, optional
             tag or tags to get the data for. If omitted, the default
             tag is returned. If a list of multiple tags is given, the function
-            will return a list with a :class:`wapi.util.TS` object for each tag.
+            will return a list with a :class:`volue_insight_timeseries.util.TS`
+            object for each tag.
 
         with_data: bool, optional
-            If with_data is False, the returned  :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -1018,24 +1034,24 @@ class TaggedInstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -1043,7 +1059,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
 
         if only_accessible is not None:
@@ -1083,8 +1099,8 @@ class TaggedInstanceCurve(BaseCurve):
 
         This function returns the time series for ONE tag and the latest
         available issue_date (within a given period, if specified)
-        as :class:`wapi.util.TS` objects. The tag to get the data for
-        can be specified in the "tags" argument. If None (=all tags)
+        as :class:`volue_insight_timeseries.util.TS` objects. The tag to get the
+        data for can be specified in the "tags" argument. If None (=all tags)
         or a list of tags is provided, only the timeseries for one of the tags
         (the first one found to have valid data) is returned. So it is
         recommended to specify ONE desired tag in "tags".
@@ -1098,7 +1114,8 @@ class TaggedInstanceCurve(BaseCurve):
         ----------
         tags: string or list, optional
             tag or list of tags to consider when returning the
-            :class:`wapi.util.TS` object. The function returns a timeseries
+            :class:`volue_insight_timeseries.util.TS` object.
+            The function returns a timeseries
             for ONE of the given tags. If you want get data for a specific tag,
             only specify one tag here (recommended!).
 
@@ -1123,7 +1140,8 @@ class TaggedInstanceCurve(BaseCurve):
             "issue_date_from".
 
         with_data: bool, optional
-            If with_data is False, the returned  :class:`wapi.util.TS` object
+            If with_data is False,
+            the returned :class:`volue_insight_timeseries.util.TS` object
             only contains the attributes and meta data information but no
             data values.
 
@@ -1151,24 +1169,24 @@ class TaggedInstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -1176,7 +1194,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
 
         if only_accessible is not None:
@@ -1285,24 +1303,24 @@ class TaggedInstanceCurve(BaseCurve):
             to given "time_zone" here.
 
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_time_zones`.
+            :meth:`volue_insight_timeseries.session.Session.get_time_zones`.
 
         filter: str, optional
             only get a specific subset of the data.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_filters` :
+            :meth:`volue_insight_timeseries.session.Session.get_filters` :
 
         function: str, optional
             function used to aggregate or split data, must be used together
             with the ``frequency`` parameter.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_functions` :
+            :meth:`volue_insight_timeseries.session.Session.get_functions` :
 
         frequency: str, optional
             data will be aggregated or split to the requested frequency using
             the given function.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         output_time_zone: str, optional
             Change curve time zone AFTER performing an aggregation/split
@@ -1310,7 +1328,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         args = [util.make_arg('data_offset', '{}'.format(data_offset))]
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
@@ -1362,7 +1380,7 @@ class TaggedInstanceCurve(BaseCurve):
             returned for those instances whose issue_date is compatible
             with issue_frequency.
             You can find valid values for this by calling
-            :meth:`wapi.session.Session.get_frequencies`.
+            :meth:`volue_insight_timeseries.session.Session.get_frequencies`.
 
         tag: str, optional
             tag to get the data for. If omitted, the default tag is used.
@@ -1379,7 +1397,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         Returns
         -------
-        :class:`wapi.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object
         """
         args = [util.make_arg('data_date', data_date)]
         if issue_frequency is not None:

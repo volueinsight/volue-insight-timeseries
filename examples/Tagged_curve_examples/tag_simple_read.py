@@ -2,7 +2,7 @@
 This simple example reads data from a TAGGED curve
 Have a look at the documentation for further information:
 """
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -12,8 +12,8 @@ my_config_file = 'path/to/your/config.ini'
 ############################################
 
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=my_config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # Define start and end time
 # start_date

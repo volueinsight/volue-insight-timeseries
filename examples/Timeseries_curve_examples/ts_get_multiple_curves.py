@@ -1,11 +1,11 @@
 """
-Example that reads data from wapi TIMESERIES curves
+Example that reads data from volue_insight_timeseries TIMESERIES curves
 can read multiple curves, and each curve for multiple regions
 aggregates (averages) output frequency, if specified.
 Save read data to csv files.
 """
 
-import wapi
+import volue_insight_timeseries
 import pandas as pd
 import os
 
@@ -44,8 +44,8 @@ if not os.path.isdir(data_dir):
     # if not, create one
     os.mkdir(data_dir)
 
-# Create a session to Connect to Wattsight Database
-session = wapi.Session(config_file=config_file)
+# Create a session to Connect to Volue Insight API
+session = volue_insight_timeseries.Session(config_file=config_file)
 
 # loop through the given curves
 for c, curve_name in enumerate(curve_names):

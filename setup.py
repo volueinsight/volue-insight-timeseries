@@ -17,7 +17,7 @@ install_requires = [
 
 setup(
     name='volue-insight-timeseries',
-    python_requires='>=3.9',
+    python_requires='>=3.9, <=3.11',
     packages=find_packages(),
     install_requires=install_requires,
     tests_require=[

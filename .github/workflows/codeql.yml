@@ -43,4 +43,5 @@ jobs:
 
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
-
+        with:
+          scandir: './releases'

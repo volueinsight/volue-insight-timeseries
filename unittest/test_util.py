@@ -1,7 +1,7 @@
 import pytest
 
-from wapi.curves import TimeSeriesCurve
-from wapi.util import TS
+from volue_insight_timeseries.curves import TimeSeriesCurve
+from volue_insight_timeseries.util import TS
 
 
 @pytest.fixture

@@ -1,11 +1,15 @@
 from unittest.mock import Mock, patch, MagicMock
-
+import requests_mock
 import pytest
 import requests
-
-import wapi
+import os
 import json
+import time
 
+import volue_insight_timeseries as vit
+
+
+authprefix = 'rtsp://auth.host/oauth2'
 
 class MockResponse:
     def __init__(self, status_code, content="Mock content"):
@@ -13,27 +17,27 @@ class MockResponse:
         self.content = content
         
 
-def make_wapi_session():
-    return wapi.session.Session(urlbase='https://volueinsight.com',
+def make_vit_session() -> vit.Session:
+    return vit.session.Session(urlbase='https://volueinsight.com',
                                 auth_urlbase='https://auth.vs.com',
                                 client_id='client1',
                                 client_secret='secret1')
 
 # ignore auth
-@patch('wapi.session.auth', MagicMock())
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth', MagicMock())
+@patch('volue_insight_timeseries.session.requests')
 def test_data_request__get__ok(requests_mock):
     mock_response = MockResponse(200)
     # https://docs.python.org/3/library/unittest.mock-examples.html#mocking-chained-calls
     requests_mock.Session.return_value.request.return_value = mock_response
 
-    session = make_wapi_session()
+    session = make_vit_session()
     response = session.data_request('GET', None, '/curves')
 
     assert response == mock_response
 
 
-@patch.object(wapi.session.requests.Session, "request")
+@patch.object(vit.session.requests.Session, "request")
 def test_data_request__token_expire__ok(mock_request):
     def mock_request_effect(**kwargs):
         if kwargs["method"] == "POST":
@@ -44,7 +48,7 @@ def test_data_request__token_expire__ok(mock_request):
     mock_request.side_effect = mock_request_effect
 
     # verify auth getting token at beginning
-    session = make_wapi_session()    
+    session = make_vit_session()    
     assert session.auth.get_headers(None) == {'Authorization': 'b a'}
 
     # verify auth refreshing token
@@ -61,12 +65,12 @@ def test_data_request__token_expire__ok(mock_request):
         (None, "/token", "https://volueinsight.com/token"), 
         ("http://urlbase", "/token", "http://urlbase/token")
     ])
-@patch('wapi.session.auth', MagicMock())
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth', MagicMock())
+@patch('volue_insight_timeseries.session.requests')
 def test_send_data_request__long_url__correct(requests_mock, urlbase, url, longurl_expected):
     requests_mock.Session.return_value.request.return_value = MockResponse(200)
 
-    session = make_wapi_session()    
+    session = make_vit_session()    
     session.data_request('GET', urlbase=urlbase, url=url)
 
     call_args = requests_mock.Session.return_value.request.call_args
@@ -79,12 +83,12 @@ def test_send_data_request__long_url__correct(requests_mock, urlbase, url, longu
         (40, None, b"40"), 
         ("basestring", "rawdata", b"basestring")
     ])
-@patch('wapi.session.auth', MagicMock())
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth', MagicMock())
+@patch('volue_insight_timeseries.session.requests')
 def test_send_data_request__databytes__correct(requests_mock, data, rawdata, databytes_expected):
     requests_mock.Session.return_value.request.return_value = MockResponse(200)
 
-    session =  make_wapi_session()   
+    session =  make_vit_session()   
     session.data_request('GET', None, None, data=data, rawdata=rawdata)
 
     call_args = requests_mock.Session.return_value.request.call_args
@@ -92,14 +96,14 @@ def test_send_data_request__databytes__correct(requests_mock, data, rawdata, dat
 
 
 @pytest.mark.parametrize("failed_status_code", [408, 500, 599])
-@patch('wapi.session.auth', MagicMock())
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth', MagicMock())
+@patch('volue_insight_timeseries.session.requests')
 def test_send_data_request__retries__correct(requests_mock, failed_status_code):
     requests_mock.Session.return_value.request.return_value = MockResponse(failed_status_code)
 
     retries_count = 3
-    wapi.session.RETRY_DELAY = 0.00001
-    session =  make_wapi_session()   
+    vit.session.RETRY_DELAY = 0.00001
+    session =  make_vit_session()   
     session.send_data_request("GET", "http://urlbase", "/url", "data", None, "headers", "authval", False, retries_count)
 
     call_args = requests_mock.Session.return_value.request.call_args
@@ -108,8 +112,8 @@ def test_send_data_request__retries__correct(requests_mock, failed_status_code):
     assert requests_mock.Session.return_value.request.call_count == retries_count + 1
 
 
-@patch('wapi.session.auth')
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth')
+@patch('volue_insight_timeseries.session.requests')
 def test_data_request__get_auth__first_failed_then_ok(requests_mock, auth_mock):
     mock_response = MockResponse(200)
     requests_mock.Session.return_value.request.return_value = mock_response
@@ -126,8 +130,8 @@ def test_data_request__get_auth__first_failed_then_ok(requests_mock, auth_mock):
     oauth_mock.validate_auth = validate_auth
     oauth_mock.get_headers.return_value = {'Authorization': 'X Y'}
 
-    wapi.session.RETRY_DELAY = 0.00001
-    session = make_wapi_session()
+    vit.session.RETRY_DELAY = 0.00001
+    session = make_vit_session()
     session.retry_update_auth = True
 
     response = session.data_request('GET', None, '/curves')
@@ -141,8 +145,8 @@ def test_data_request__get_auth__first_failed_then_ok(requests_mock, auth_mock):
     assert call_args[1]['headers'] == {'Authorization': 'X Y'}
 
 
-@patch('wapi.session.auth')
-@patch('wapi.session.requests')
+@patch('volue_insight_timeseries.session.auth')
+@patch('volue_insight_timeseries.session.requests')
 def test_data_request__fail_too_many_times(requests_mock, auth_mock):
     mock_response = MockResponse(200)
     requests_mock.Session.return_value.request.return_value = mock_response
@@ -157,8 +161,8 @@ def test_data_request__fail_too_many_times(requests_mock, auth_mock):
     oauth_mock.validate_auth = validate_auth
     oauth_mock.get_headers.return_value = {'Authorization': 'X Y'}
 
-    wapi.session.RETRY_DELAY = 0.00001
-    session = make_wapi_session()
+    vit.session.RETRY_DELAY = 0.00001
+    session = make_vit_session()
     session.retry_update_auth = True
 
     with pytest.raises(requests.exceptions.ConnectionError):
@@ -167,3 +171,93 @@ def test_data_request__fail_too_many_times(requests_mock, auth_mock):
     assert len(validation_called) == 5
     assert requests_mock.Session.return_value.request.call_count == 0
 
+
+#
+# Test authentication setup
+#
+def test_build_sessions():
+    s = vit.Session()
+    assert s.urlbase == vit.session.API_URLBASE
+    assert s.auth is None
+    assert s.timeout == vit.session.TIMEOUT
+    s = vit.Session(urlbase ='test_data', timeout=5)
+    assert s.urlbase == 'test_data'
+    assert s.timeout == 5
+
+
+def test_configure_by_file():
+    config_file = os.path.join(os.path.dirname(__file__), 'testconfig_oauth.ini')
+    s = vit.Session(urlbase='rtsp://test.host')
+    #
+    mock = requests_mock.Adapter()
+    # urllib does things based on protocol, so (ab)use one which is reasonably
+    # http-like instead of inventing our own.
+    s._session.mount('rtsp', mock)
+    client_token = json.dumps({'token_type': 'Bearer', 'access_token': 'secrettoken',
+                               'expires_in': 1000})
+    mock.register_uri('POST', authprefix + '/token', text=client_token)
+    #
+    s.read_config_file(config_file)
+    assert s.urlbase == 'rtsp://test.host'
+    assert isinstance(s.auth, vit.auth.OAuth)
+    assert s.auth.client_id == 'clientid'
+    assert s.auth.client_secret == 'verysecret'
+    assert s.auth.auth_urlbase == 'rtsp://auth.host'
+    assert s.auth.token_type == 'Bearer'
+    assert s.auth.token == 'secrettoken'
+    lifetime = s.auth.valid_until - time.time()
+    assert lifetime > 900
+    assert lifetime < 1010
+    assert s.timeout == 10.0
+
+
+def test_minimal_config_file():
+    config_file = os.path.join(os.path.dirname(__file__), 'testconfig_minimal.ini')
+    s = vit.Session(config_file=config_file)
+    #
+    assert s.urlbase == 'https://api.wattsight.com'
+    assert s.auth is None
+
+
+def test_configure_by_param():
+    s = vit.Session(urlbase='rtsp://test.host')
+    #
+    mock = requests_mock.Adapter()
+    # urllib does things based on protocol, so (ab)use one which is reasonably
+    # http-like instead of inventing our own.
+    s._session.mount('rtsp', mock)
+    client_token = json.dumps({'token_type': 'Bearer', 'access_token': 'secrettoken',
+                               'expires_in': 1000})
+    mock.register_uri('POST', authprefix + '/token', text=client_token)
+    #
+    s.configure(client_id='clientid', client_secret='verysecret', auth_urlbase='rtsp://auth.host')
+    assert s.urlbase == 'rtsp://test.host'
+    assert isinstance(s.auth, vit.auth.OAuth)
+    assert s.auth.client_id == 'clientid'
+    assert s.auth.client_secret == 'verysecret'
+    assert s.auth.auth_urlbase == 'rtsp://auth.host'
+    assert s.auth.token_type == 'Bearer'
+    assert s.auth.token == 'secrettoken'
+    lifetime = s.auth.valid_until - time.time()
+    assert lifetime > 900
+    assert lifetime < 1010
+    assert s.timeout == vit.session.TIMEOUT
+
+
+def test_reconfigure_session():
+    config_file = os.path.join(os.path.dirname(__file__), 'testconfig_oauth.ini')
+    s = vit.Session(urlbase='test_data')
+    #
+    mock = requests_mock.Adapter()
+    # urllib does things based on protocol, so (ab)use one which is reasonably
+    # http-like instead of inventing our own.
+    s._session.mount('rtsp', mock)
+    client_token = json.dumps({'token_type': 'Bearer', 'access_token': 'secrettoken',
+                               'expires_in': 1000})
+    mock.register_uri('POST', authprefix + '/token', text=client_token)
+    #
+    s.read_config_file(config_file)
+    assert s.urlbase == 'rtsp://test.host'
+    with pytest.raises(vit.session.ConfigException) as exinfo:
+        s.configure('clientid', 'clientsecret')
+    assert 'already done' in str(exinfo.value)

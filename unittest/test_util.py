@@ -1,6 +1,5 @@
 import pytest
 
-from volue_insight_timeseries.curves import TimeSeriesCurve
 from volue_insight_timeseries.util import TS, TIME_SERIES
 
 
@@ -108,5 +107,5 @@ def test_fullname(ts1):
     ts1.name = None
     assert ts1.fullname == "1 TIME_SERIES CET M"
 
-    
+
 

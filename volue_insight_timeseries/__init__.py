@@ -5,4 +5,4 @@
 from .session import Session
 from . import auth, curves, events, session, util
 
-VERSION = __version__ = '1.0.0b1.dev1'
+VERSION = __version__ = '1.0.0b1.dev2'

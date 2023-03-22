@@ -3,6 +3,7 @@ try:
 except ImportError:
     from urlparse import urljoin
 
+import os
 import requests
 import json
 import time
@@ -78,6 +79,10 @@ class Session(object):
             self.urlbase = urlbase
         if timeout is not None:
             self.timeout = timeout
+
+        # This is passed to wapi to track the source of data
+        # Added as a container env var for all deployments and jobs using this package
+        self.reported_data_source = os.getenv('REPORTED_DATA_SOURCE')
 
     def read_config_file(self, config_file):
         """Set up according to configuration file with hosts and access details"""
@@ -498,6 +503,10 @@ class Session(object):
                      stream=False, retries=RETRY_COUNT):
         """Run a call to the backend, dealing with authentication etc."""
         headers = self._validate_auth(data, rawdata)
+        # Add data source
+        if self.reported_data_source:
+            headers['X-Model-Name'] = self.reported_data_source
+
         res = self.send_data_request(req_type, urlbase, url, data, rawdata, headers, authval, stream, retries)
         return res
 

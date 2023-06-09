@@ -1,0 +1,60 @@
+name: Publish package
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish"
+        required: false
+        default: ""
+
+jobs:
+  publish-package:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.11
+
+      - run: pip install -U twine wheel
+
+      - name: Read version
+        id: read-version
+        run: |
+
+          # override VERSION file with input from dispatch action
+          if [ ${{ github.event_name }} == "workflow_dispatch" ]; then
+            version_input=${{ github.event.inputs.version }}
+            echo $version_input > volue_insight_timeseries/VERSION
+          fi
+
+          version=$(<volue_insight_timeseries/VERSION)
+          echo "VERSION=$version" >> "$GITHUB_OUTPUT"
+          echo "version is $version"
+
+      - name: Publish to PyPI
+        id: publish-pypi
+        run: |
+          pypi_index=pypi
+          VERSION=${{ steps.read-version.outputs.VERSION }}
+
+          echo "Release to $pypi_index."
+          rm -rf dist
+          python setup.py sdist bdist_wheel
+          twine upload --verbose --repository $pypi_index dist/volue-insight-timeseries-$VERSION.tar.gz dist/volue_insight_timeseries-$VERSION-*.whl
+
+          echo "Done !"
+
+        env:
+          TWINE_USERNAME: ${{ env.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

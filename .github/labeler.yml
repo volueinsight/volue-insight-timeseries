@@ -1,0 +1,16 @@
+documentation:
+  - '**/*.md'
+
+dependencies:
+  - 'requirements.txt'
+
+feature:
+  - '**/*.py'
+
+internal:
+  - '.github/**'
+  - 'releases/**'
+    
+# we don't want Release PR in the changelog
+ignore-for-release:
+  - 'volue_insight_timeseries/VERSION'

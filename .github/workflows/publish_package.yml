@@ -45,6 +45,8 @@ jobs:
       - name: Publish to PyPI
         id: publish-pypi
         run: |
+          echo "TWINE_USERNAME $TWINE_USERNAME"
+          echo "TWINE_PASSWORD $TWINE_PASSWORD"
           pypi_index=pypi
           VERSION=${{ steps.read-version.outputs.VERSION }}
 

@@ -58,5 +58,5 @@ jobs:
           echo "Done !"
 
         env:
-          TWINE_USERNAME: ${{ env.PYPI_USERNAME }}
+          TWINE_USERNAME: ${{ vars.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

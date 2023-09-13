@@ -1,9 +1,9 @@
 """
 This example shows how to reproduce the plot from these 4 pages:
-Consumption: https://app.wattsight.com/#tab/power/115/2
-Photovoltaic: https://app.wattsight.com/#tab/power/135/2
-Wind: https://app.wattsight.com/#tab/power/126/2
-Residual Load: https://app.wattsight.com/#tab/power/109/2
+Consumption: https://app.volueinsight.com/#tab/power/115/2
+Photovoltaic: https://app.volueinsight.com/#tab/power/135/2
+Wind: https://app.volueinsight.com/#tab/power/126/2
+Residual Load: https://app.volueinsight.com/#tab/power/109/2
 
 The pages show the latest forecasts compared to actual values and normals
 """
@@ -21,7 +21,7 @@ my_config_file = 'path/to/your/config.ini'
 
 # Choose one of the available regions by using its abbreviation
 # as shown on the top of each wattsight page
-# (eg https://app.wattsight.com/#tab/power/135/2)
+# (eg https://app.volueinsight.com/#tab/power/135/2)
 region = 'de'
 
 # choose one of the four possible categories for this plot:

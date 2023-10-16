@@ -13,20 +13,22 @@
 #
 import os
 import sys
-sys.path.append(os.path.abspath('..'))
 
+sys.path.append(os.path.abspath('..'))
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, '..', 'volue_insight_timeseries', 'VERSION')) as fv:
+    VERSION = __version__ = fv.read().strip()
 
 # -- Project information -----------------------------------------------------
 
 project = 'Volue Insight API'
-copyright = '2021, Volue'
+copyright = '2023, Volue'
 author = 'Volue Insight'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
-
+release = VERSION
 
 # -- General configuration ---------------------------------------------------
 
@@ -42,7 +44,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-	'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -71,7 +73,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -106,12 +107,10 @@ html_show_sourcelink = True
 # of the sidebar.
 html_logo = "img/v-logo.png"
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'wapidoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -141,7 +140,6 @@ latex_documents = [
      'Wattsight', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -150,7 +148,6 @@ man_pages = [
     (master_doc, 'wapi', 'wapi Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -166,6 +163,6 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
-#Custom css to the documentation
+# Custom css to the documentation
 def setup(app):
     app.add_css_file('css/custom.css')

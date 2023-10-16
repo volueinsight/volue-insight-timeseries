@@ -8,10 +8,10 @@ Volue Insight API Python library documentation
 
 :Maintainer: <support.insight@volue.com>
 :Organization: `Volue Insight`_
-:Version: |version|
+:Version: |release|
 :Date: |today|
 :Copyright:
-  2021, Volue Insight
+  2023, Volue Insight
 
 This library is meant as a simple toolkit for working with data from
 https://api.volueinsight.com/ (or equivalent services). Note that access is
@@ -21,7 +21,7 @@ unless you have a valid Volue Insight account.
 The source code of this library is hosted on github and licensed under the
 ``MIT License``.
 
-https://github.com/wattsight/wapi-python
+https://github.com/volueinsight/volue-insight-timeseries
 
 This documentation contains the following pages:
 

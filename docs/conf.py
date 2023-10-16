@@ -15,8 +15,9 @@ import os
 import sys
 
 sys.path.append(os.path.abspath('..'))
-
-from volue_insight_timeseries import VERSION
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, '..', 'volue_insight_timeseries', 'VERSION')) as fv:
+    VERSION = __version__ = fv.read().strip()
 
 # -- Project information -----------------------------------------------------
 

@@ -12,6 +12,6 @@ library with pip.
 Start a terminal (a shell/command prompt) of your operation system and use
 the following command::
 
-    pip install -U wapi-python
+    pip install -U volue-insight-timeseries
 
 .. _Python: https://www.python.org/downloads/

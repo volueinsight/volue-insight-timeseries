@@ -45,7 +45,7 @@ metadata attributes. To search for curves, you can either
 use the `api web interface`_ (see the `documentation`_ for more info)
 or search for curves within python.
 
-To search for curves within python, use the :meth:`wapi.session.Session.search`
+To search for curves within python, use the :meth:`volue_insight_timeseries.session.Session.search`
 function.
 
 The valid values for each attribute can be accessed using
@@ -62,7 +62,7 @@ In order to fetch data from WAPI, you first have to fetch the curve you want
 to read the data from. You can either do this by
 :ref:`searching for curves<search-curves>` ,
 since this will already return a list of curve objects. Or you can get
-a curve object by its name using the :meth:`wapi.session.Session.get_curve`
+a curve object by its name using the :meth:`volue_insight_timeseries.session.Session.get_curve`
 method::
 
     curve = session.get_curve(name='pro ee wnd intraday mwh/h cet h a')
@@ -84,7 +84,7 @@ The value of the attribute can be accessed with ``curve.attribute_name``, eg ::
     >>> curve.curve_type
     TIME_SERIES
 
-.. automethod:: wapi.session.Session.get_curve
+.. automethod:: volue_insight_timeseries.session.Session.get_curve
     :noindex:
 
 
@@ -107,8 +107,8 @@ Getting data from a TIME_SERIES curve
 A Time Series curves holds a single time series.
 This is used for actual values, backcasts, normals, etc.
 To get data from a Times Series curve, use the
-:meth:`~wapi.curves.TimeSeriesCurve.get_data` method
-( :meth:`wapi.curves.TimeSeriesCurve.get_data` ). You can get the data as it
+:meth:`~volue_insight_timeseries.curves.TimeSeriesCurve.get_data` method
+( :meth:`volue_insight_timeseries.curves.TimeSeriesCurve.get_data` ). You can get the data as it
 is stored in the curve, by defining a start date (`data_from`) and
 an end date (`data_to`) ::
 
@@ -119,20 +119,20 @@ an end date (`data_to`) ::
 .. note::
     End dates are always excluded in the result!
 
-The :meth:`~wapi.curves.TimeSeriesCurve.get_data`  method returns
-a :class:`~wapi.util.TS` object (:class:`wapi.util.TS`).
+The :meth:`~volue_insight_timeseries.curves.TimeSeriesCurve.get_data`  method returns
+a :class:`~volue_insight_timeseries.util.TS` object (:class:`volue_insight_timeseries.util.TS`).
 :ref:`Here you can see how to work with an TS object<use-TS>` .
 
 It is possible to process curves directly in the API (eg aggregating to
 daily/weekly/monthly/yearly values) by using additional inputs to the
-:meth:`~wapi.curves.TimeSeriesCurve.get_data`
+:meth:`~volue_insight_timeseries.curves.TimeSeriesCurve.get_data`
 method. This can be used with great effect to reduce the amount of
 data retrieved if the full set of details is not needed.
 Have a look at the detailed method documentation below and at our
 :ref:`examples<examples>` .
 
 
-.. automethod:: wapi.curves.TimeSeriesCurve.get_data
+.. automethod:: volue_insight_timeseries.curves.TimeSeriesCurve.get_data
     :noindex:
 
 Getting data from a TAGGED curve
@@ -142,13 +142,13 @@ A tagged curve holds a set of closely related time series, each identified
 by a tag. The most common use of tags is for ensemble weather data.
 
 The existing set of tags of a curve can be found using the
-:meth:`~wapi.curves.TaggedCurve.get_tags` method::
+:meth:`~volue_insight_timeseries.curves.TaggedCurve.get_tags` method::
 
     tags = curve.get_tags()
 
 You can get data from a tagged curve using the
-:meth:`~wapi.curves.TaggedCurve.get_data` method. This method has the same
-inputs and functionality as the :meth:`wapi.curves.TimeSeriesCurve.get_data`
+:meth:`~volue_insight_timeseries.curves.TaggedCurve.get_data` method. This method has the same
+inputs and functionality as the :meth:`volue_insight_timeseries.curves.TimeSeriesCurve.get_data`
 method for Time Series curves. Additionally you can provide a ``tag`` argument.
 ``tag`` can be a single value or a list of values. If omitted, the default tag
 is returned. When a list of tags is requested, a list of time series is
@@ -164,10 +164,10 @@ returned::
     ts_list = curve.get_data(data_from='2018-01-01', data_to='2018-02-01', tag=['Avg','01','12'])
 
 
-.. automethod:: wapi.curves.TaggedCurve.get_tags
+.. automethod:: volue_insight_timeseries.curves.TaggedCurve.get_tags
     :noindex:
 
-.. automethod:: wapi.curves.TaggedCurve.get_data
+.. automethod:: volue_insight_timeseries.curves.TaggedCurve.get_data
     :noindex:
 
 
@@ -181,23 +181,23 @@ forecast.
 
 
 You can fetch a single instance identified by its issue_date using the
-:meth:`~wapi.curves.InstanceCurve.get_instance` method::
+:meth:`~volue_insight_timeseries.curves.InstanceCurve.get_instance` method::
 
     ts = curve.get_instance(issue_date='2018-01-01T00:00')
 
 
 You can fetch multiple instances (within a given time-range) using the
-:meth:`~wapi.curves.InstanceCurve.search_instances` method. The function
-will only return :class:`~wapi.util.TS` objects with data, when the
+:meth:`~volue_insight_timeseries.curves.InstanceCurve.search_instances` method. The function
+will only return :class:`~volue_insight_timeseries.util.TS` objects with data, when the
 ``with_data`` argument is set to ``True`` (default is ``False`` and will return
-a :class:`~wapi.util.TS` object with meta data only)::
+a :class:`~volue_insight_timeseries.util.TS` object with meta data only)::
 
     ts_list = curve.search_instances(issue_date_from='2018-07-01Z00:00',
                                      issue_date_to='2018-07-04Z00:00',
                                      with_data=True)
 
 You can also fetch the latest available instance using the
-:meth:`~wapi.curves.InstanceCurve.get_latest` method::
+:meth:`~volue_insight_timeseries.curves.InstanceCurve.get_latest` method::
 
     ts = curve.get_latest()
 
@@ -228,12 +228,12 @@ unique combination of issue_date and tag. Ensamble forecasts are a
 typical use case for Tagged Instance curves.
 
 The existing set of tags of a curve can be found using the
-:meth:`~wapi.curves.TaggedInstanceCurve.get_tags` method::
+:meth:`~volue_insight_timeseries.curves.TaggedInstanceCurve.get_tags` method::
 
     tags = curve.get_tags()
 
 You can fetch a single instance identified by its issue_date using the
-:meth:`~wapi.curves.InstanceCurve.get_instance` method.
+:meth:`~volue_insight_timeseries.curves.InstanceCurve.get_instance` method.
 This function allows you the specify a single tag or a list of tags to the
 ``tag`` argument. If omitted, the default tag is returned. ::
 
@@ -247,10 +247,10 @@ This function allows you the specify a single tag or a list of tags to the
     ts_list = curve.get_instance(issue_date='2018-07-01T00:00', tag=['Avg','02','05'])
 
 You can fetch multiple instances (within a given time-range) using the
-:meth:`~wapi.curves.TaggedInstanceCurve.search_instances` method. The function
-will only return :class:`~wapi.util.TS` objects with data, when the ``with_data``
+:meth:`~volue_insight_timeseries.curves.TaggedInstanceCurve.search_instances` method. The function
+will only return :class:`~volue_insight_timeseries.util.TS` objects with data, when the ``with_data``
 argument is set to ``True`` (default is ``False`` and will return a
-:class:`~wapi.util.TS` object with meta data only). Here you can again omit
+:class:`~volue_insight_timeseries.util.TS` object with meta data only). Here you can again omit
 the ``tags`` argument, which returns the default tag for each
 issue_date, or specify a single tag or a list of tags. ::
 
@@ -260,7 +260,7 @@ issue_date, or specify a single tag or a list of tags. ::
                                      tags=['Avg','11'])
 
 You can also fetch the latest available instance using the
-:meth:`~wapi.curves.InstanceCurve.get_latest` method. This function will always
+:meth:`~volue_insight_timeseries.curves.InstanceCurve.get_latest` method. This function will always
 return exactly ONE Time Series curve for ONE tag of the latest issue_date.
 It is possible to provide a list of tags to the ``tags`` argument,
 but it is strongly recommended to specify ONE SINGLE TAG here! If omitted,
@@ -274,16 +274,16 @@ the default tag is returned. ::
     by using additional inputs. Have a look at the detailed function
     descriptions below and at the provided :ref:`examples<examples>`.
 
-.. automethod:: wapi.curves.TaggedInstanceCurve.get_tags
+.. automethod:: volue_insight_timeseries.curves.TaggedInstanceCurve.get_tags
     :noindex:
 
-.. automethod:: wapi.curves.TaggedInstanceCurve.get_instance
+.. automethod:: volue_insight_timeseries.curves.TaggedInstanceCurve.get_instance
     :noindex:
 
-.. automethod:: wapi.curves.TaggedInstanceCurve.search_instances
+.. automethod:: volue_insight_timeseries.curves.TaggedInstanceCurve.search_instances
     :noindex:
 
-.. automethod:: wapi.curves.TaggedInstanceCurve.get_latest
+.. automethod:: volue_insight_timeseries.curves.TaggedInstanceCurve.get_latest
     :noindex:
 
 
@@ -293,11 +293,11 @@ Working with data from a curve object
 --------------------------------------
 
 Independent from the curve type and the respective method to get the data,
-all these methods return a :class:`~wapi.util.TS` object
-(:class:`wapi.util.TS`).
+all these methods return a :class:`~volue_insight_timeseries.util.TS` object
+(:class:`volue_insight_timeseries.util.TS`).
 
-The most important function of the :class:`~wapi.util.TS` class, is the
-:meth:`~wapi.util.TS.to_pandas` function,
+The most important function of the :class:`~volue_insight_timeseries.util.TS` class, is the
+:meth:`~volue_insight_timeseries.util.TS.to_pandas` function,
 which will return a `pandas.Series`_ object with a date index, containing the
 data of the curve::
 
@@ -315,22 +315,22 @@ Have a look at our :ref:`examples<examples>` or at
 the `pandas documentation`_ , to see how to work
 with `pandas.Series`_ or `pandas.DataFrame`_ objects.
 
-.. automethod:: wapi.util.TS.to_pandas
+.. automethod:: volue_insight_timeseries.util.TS.to_pandas
     :noindex:
 
 
-The :class:`~wapi.util.TS` class contains some simple aggregation functions, which can be
-used directly on a :class:`~wapi.util.TS` object:
-:meth:`~wapi.util.TS.sum` , :meth:`~wapi.util.TS.mean`
-and :meth:`~wapi.util.TS.median` .
+The :class:`~volue_insight_timeseries.util.TS` class contains some simple aggregation functions, which can be
+used directly on a :class:`~volue_insight_timeseries.util.TS` object:
+:meth:`~volue_insight_timeseries.util.TS.sum` , :meth:`~volue_insight_timeseries.util.TS.mean`
+and :meth:`~volue_insight_timeseries.util.TS.median` .
 
-.. automethod:: wapi.util.TS.sum
+.. automethod:: volue_insight_timeseries.util.TS.sum
     :noindex:
 
-.. automethod:: wapi.util.TS.mean
+.. automethod:: volue_insight_timeseries.util.TS.mean
     :noindex:
 
-.. automethod:: wapi.util.TS.median
+.. automethod:: volue_insight_timeseries.util.TS.median
     :noindex:
 
 

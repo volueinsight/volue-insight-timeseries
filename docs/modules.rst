@@ -5,7 +5,7 @@ WAPI Python API References
 wapi.curves module
 -------------------
 
-.. automodule:: wapi.curves
+.. automodule:: volue_insight_timeseries.curves
     :members:
     :undoc-members:
     :show-inheritance:
@@ -14,7 +14,7 @@ wapi.curves module
 wapi.session module
 --------------------
 
-.. automodule:: wapi.session
+.. automodule:: volue_insight_timeseries.session
     :members:
     :undoc-members:
     :show-inheritance:
@@ -22,7 +22,7 @@ wapi.session module
 wapi.events module
 --------------------
 
-.. automodule:: wapi.events
+.. automodule:: volue_insight_timeseries.events
     :members:
     :undoc-members:
     :show-inheritance:
@@ -30,7 +30,7 @@ wapi.events module
 wapi.util module
 --------------------
 
-.. automodule:: wapi.util
+.. automodule:: volue_insight_timeseries.util
     :members:
     :undoc-members:
     :show-inheritance:

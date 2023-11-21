@@ -5,8 +5,8 @@ Connect to the Volue Insight API
 
 In order to work with WAPI, first create a session.
 A session can be configured using a config file, or by providing
-your client_id and client_secret to the ``wapi.Session`` class
-(:class:`wapi.session.Session`).
+your client_id and client_secret to the ``volue_insight_timeseries.Session`` class
+(:class:`volue_insight_timeseries.session.Session`).
 
 You can get the required id and secret by creating an OAuth client
 at https://auth.volueinsight.com/account/oauth-clients (as explained
@@ -23,7 +23,7 @@ establishing the connection to WAPI::
 
     import wapi
     config_file_path = 'path/to/your/configfile.ini'
-    session = wapi.Session(config_file=config_file_path)
+    session = volue_insight_timeseries.Session(config_file=config_file_path)
 
 
 
@@ -31,10 +31,10 @@ Directly using client ID and secret
 -----------------------------------
 
 You can also directly use your client ID and secret as input to
-the :class:`~wapi.session.Session` class ::
+the :class:`~volue_insight_timeseries.session.Session` class ::
 
     import wapi
-    session = wapi.Session(client_id='client id', client_secret='client secret', timeout=300)
+    session = volue_insight_timeseries.Session(client_id='client id', client_secret='client secret', timeout=300)
 
 The timeout parameter is optional and defaults to 300 seconds.
 This can also be set in the config file as seen in :download:`sample config file <../sampleconfig.ini>`

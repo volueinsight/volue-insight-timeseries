@@ -4,7 +4,7 @@ Listening for changes
 =====================
 
 
-VoluteInsight Time-Series API supports listening for changes to curves.  An event listener is set up, and behaves
+VolueInsight Time-Series API supports listening for changes to curves.  An event listener is set up, and behaves
 like an infinite iterator, returning change events as they happen.
 
 To create an event listener, find a list of curves (or a list of curve ids) and use that

@@ -123,7 +123,7 @@ class TS(object):
         if name is None:
             name = self.fullname
         if self.points is None or len(self.points) == 0:
-            return pd.Series(name=name)
+            return pd.Series(name=name, dtype='float64')
 
         index = []
         values = []

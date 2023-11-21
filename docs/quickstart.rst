@@ -10,7 +10,7 @@ Quickstart
 2. Import wapi and create a :class:`~volue_insight_timeseries.session.Session` to connect to the database using
    your `authentication credentials`_ ::
 
-        import wapi
+        import volue_insight_timeseries
         session = volue_insight_timeseries.Session(client_id='client id', client_secret='client secret')
 
 3. Get a curve object by its name and fetch data from the curve. There are
@@ -62,6 +62,6 @@ Quickstart
         'TIME_SERIES'
 
 
-.. _authentication credentials: https://https://auth.volueinsight.com/account/oauth-clients
+.. _authentication credentials: https://auth.volueinsight.com/account/oauth-clients
 .. _pandas.Series: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html
 .. _pandas.DataFrame: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html

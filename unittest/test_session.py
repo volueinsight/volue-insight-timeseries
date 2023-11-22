@@ -215,7 +215,7 @@ def test_minimal_config_file():
     config_file = os.path.join(os.path.dirname(__file__), 'testconfig_minimal.ini')
     s = vit.Session(config_file=config_file)
     #
-    assert s.urlbase == 'https://api.wattsight.com'
+    assert s.urlbase == 'https://api.volueinsight.com'
     assert s.auth is None
 
 

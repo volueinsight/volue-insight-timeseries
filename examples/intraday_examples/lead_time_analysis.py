@@ -40,15 +40,15 @@ import plotly.graph_objects as go
 area = "DE"
 benchmark_forecast = "ec00"
 multi_source_forecast = "intraday"
-issue_date = '2023-11-26T00:00'
+issue_date = "2023-11-26T00:00"
 time_delta = 12
-data_time = '2023-11-27T10:00'
-
-
+data_time = "2023-11-27T10:00"
 # ***********************************
 
 
-def get_input_data(benchmark_forecast: str, multi_source_forecast: str, area: str) -> tuple:
+def get_input_data(
+    benchmark_forecast: str, multi_source_forecast: str, area: str
+) -> tuple:
     """This function maps the user inputs to available forecasts.
 
     Args:
@@ -65,38 +65,38 @@ def get_input_data(benchmark_forecast: str, multi_source_forecast: str, area: st
             "wnd": f"pro {area} wnd ec00 mwh/h {tz} min15 f",
             "spv": f"pro {area} spv ec00 mwh/h {tz} min15 f",
             "con": f"con {area} ec00 mwh/h {tz} min15 f",
-            "rdl": f"rdl {area} ec00 mwh/h {tz} min15 f"
+            "rdl": f"rdl {area} ec00 mwh/h {tz} min15 f",
         },
         "ec12": {
             "wnd": f"pro {area} wnd ec12 mwh/h {tz} min15 f",
             "spv": f"pro {area} spv ec12 mwh/h {tz} min15 f",
             "con": f"con {area} ec12 mwh/h {tz} min15 f",
-            "rdl": f"rdl {area} ec12 mwh/h {tz} min15 f"
+            "rdl": f"rdl {area} ec12 mwh/h {tz} min15 f",
         },
         "entsoe_da": {
             "wnd": f"pro {area} wnd da entso-e mwh/h {tz} h f",
             "spv": f"pro {area} spv da entso-e mwh/h {tz} h f",
             "con": f"con {area} da entso-e mwh/h {tz} h f",
-            "rdl": f"rdl {area} da entso-e mwh/h {tz} h f"
+            "rdl": f"rdl {area} da entso-e mwh/h {tz} h f",
         },
         "entsoe_intraday": {
             "wnd": f"pro {area} wnd intraday entso-e mwh/h {tz} h f",
             "spv": f"pro {area} spv intraday entso-e mwh/h {tz} h f",
             "con": f"con {area} intraday entso-e mwh/h {tz} h f",
-            "rdl": f"rdl {area} intraday entso-e mwh/h {tz} h f"
+            "rdl": f"rdl {area} intraday entso-e mwh/h {tz} h f",
         },
         "intraday": {
             "wnd": f"pro {area} wnd intraday mwh/h {tz} min15 f",
             "spv": f"pro {area} spv intraday mwh/h {tz} min15 f",
             "con": f"con {area} intraday mwh/h {tz} min15 f",
-            "rdl": f"rdl {area} intraday mwh/h {tz} min15 f"
+            "rdl": f"rdl {area} intraday mwh/h {tz} min15 f",
         },
         "intraday_lastec": {
             "wnd": f"pro {area} wnd intraday lastec mwh/h {tz} min15 f",
             "spv": f"pro {area} spv intraday lastec mwh/h {tz} min15 f",
             "con": f"con {area} intraday lastec mwh/h {tz} min15 f",
-            "rdl": f"rdl {area} intraday mwh/h {tz} min15 f"
-        }
+            "rdl": f"rdl {area} intraday mwh/h {tz} min15 f",
+        },
     }
     return curve_dict[benchmark_forecast], curve_dict[multi_source_forecast]
 
@@ -110,13 +110,13 @@ def getkey() -> Session:
     """
 
     # config = Session(client_id="", client_secret="")
-    config = os.getenv('WAPI_INI_READ')
+    config = os.getenv("WAPI_INI_READ")
     session = Session(config_file=config)
     return session
 
 
 def get_instance_curve(session: Session, curve_name: str, issue_date: str) -> pd.Series:
-    """ This function retrieves the instance curve released at the determined issue date.
+    """This function retrieves the instance curve released at the determined issue date.
     Args:
     session: Session object to interact with WAPI.
     curve_name: The name of the curve that is to be retrieved as an instance curve.
@@ -131,8 +131,12 @@ def get_instance_curve(session: Session, curve_name: str, issue_date: str) -> pd
     return time_series_pandas
 
 
-def get_absolute_curve(data_time: pd.Timestamp, session: Session, curve_name: str,
-                       delta_hours: pd.Timedelta) -> pd.Series:
+def get_absolute_curve(
+    data_time: pd.Timestamp,
+    session: Session,
+    curve_name: str,
+    delta_hours: pd.Timedelta,
+) -> pd.Series:
     """This function retrieves the curve which displays how the forecasted value at timestamp "data_time" develops
     with each release (absolute curve).
 
@@ -148,13 +152,19 @@ def get_absolute_curve(data_time: pd.Timestamp, session: Session, curve_name: st
 
     date_from = pd.Timestamp(data_time) - pd.Timedelta(hours=delta_hours)
     curve = session.get_curve(name=curve_name)
-    time_series = curve.get_absolute(issue_date_from=date_from, issue_date_to=data_time, data_date=data_time,
-                                     issue_frequency='MIN15')
+    time_series = curve.get_absolute(
+        issue_date_from=date_from,
+        issue_date_to=data_time,
+        data_date=data_time,
+        issue_frequency="MIN15",
+    )
     time_series_pandas = time_series.to_pandas()
     return time_series_pandas
 
 
-def get_instance_data(instance_curves_names: dict, session: Session, issue_date: pd.Timestamp) -> pd.DataFrame:
+def get_instance_data(
+    instance_curves_names: dict, session: Session, issue_date: pd.Timestamp
+) -> pd.DataFrame:
     """This function uses the get_instance_curve to retrieve the instance curve data from all benchmark curves,
     then maps it into a dataframe.
 
@@ -169,13 +179,20 @@ def get_instance_data(instance_curves_names: dict, session: Session, issue_date:
     """
     df = pd.DataFrame()
     for curve_name in instance_curves_names.values():
-        instance_curve = get_instance_curve(curve_name=curve_name, session=session, issue_date=issue_date)
+        instance_curve = get_instance_curve(
+            curve_name=curve_name, session=session, issue_date=issue_date
+        )
         instance_curve.name = map_name_to_label(instance_curve.name)
         df = pd.concat([df, instance_curve], axis=1)
     return df
 
 
-def get_absolute_data(absolute_curves_names: str, session: Session, data_time: pd.Timestamp, time_delta: pd.Timedelta):
+def get_absolute_data(
+    absolute_curves_names: str,
+    session: Session,
+    data_time: pd.Timestamp,
+    time_delta: pd.Timedelta,
+):
     """This function uses the get_absolute_curve to retrieve the absolute curve data from all multi-source curves,
     then maps it into a dataframe.
 
@@ -192,8 +209,12 @@ def get_absolute_data(absolute_curves_names: str, session: Session, data_time: p
     df = pd.DataFrame()
 
     for curve_name in absolute_curves_names.values():
-        absolute_curve = get_absolute_curve(data_time=data_time, session=session, curve_name=curve_name,
-                                            delta_hours=time_delta)
+        absolute_curve = get_absolute_curve(
+            data_time=data_time,
+            session=session,
+            curve_name=curve_name,
+            delta_hours=time_delta,
+        )
         absolute_curve.name = map_name_to_label(absolute_curve.name)
         df = pd.concat([df, absolute_curve], axis=1)
     return df
@@ -226,12 +247,21 @@ def map_name_to_label(curve_name: str):
     Returns:
         str: A name from the dictionary generated in this function. Can be used as column names in a df."
     """
-    mapping = dict(spv="Spv production", wnd="Wind production", con="Consumption", rdl="Residual load")
-    return [mapping.get(name, 'Undefined') for name in mapping if name in curve_name][0]
+    mapping = dict(
+        spv="Spv production",
+        wnd="Wind production",
+        con="Consumption",
+        rdl="Residual load",
+    )
+    return [mapping.get(name, "Undefined") for name in mapping if name in curve_name][0]
 
 
-def create_dataframe(instance_curves_df: dict, absolute_curves_df: dict, area: str,
-                     data_time: pd.Timestamp) -> pd.DataFrame:
+def create_dataframe(
+    instance_curves_df: dict,
+    absolute_curves_df: dict,
+    area: str,
+    data_time: pd.Timestamp,
+) -> pd.DataFrame:
     """This function takes two dataframes as input, instance_curves_df and absolute_curves_df and subtracts each of
     the base forecasts' values at the data time timestamp from each value in the corresponding columns in the
     multi-source dataframe.
@@ -246,14 +276,21 @@ def create_dataframe(instance_curves_df: dict, absolute_curves_df: dict, area: s
         forecast. Ready to be plotted.
     """
     data_time_timezone = pd.Timestamp(data_time, tz=timezone_mapping(area))
-    difference_curves = absolute_curves_df.sub(instance_curves_df.loc[data_time_timezone]).dropna()
+    difference_curves = absolute_curves_df.sub(
+        instance_curves_df.loc[data_time_timezone]
+    ).dropna()
 
     # Multiply spv and wind production with -1 to align residual load curve with stacked bar plot
     difference_curves.loc[:, ["Spv production", "Wind production"]] *= -1
     return difference_curves
 
 
-def plot_difference_curves(plot_data: pd.DataFrame, benchmark_forecast: str, multi_source_forecast: str, area: str):
+def plot_difference_curves(
+    plot_data: pd.DataFrame,
+    benchmark_forecast: str,
+    multi_source_forecast: str,
+    area: str,
+):
     """This function plots the data generated in create_dataframe. Production and consumption are plotted as bars,
     but residual load is plotted as a trace/line plot.
 
@@ -267,33 +304,42 @@ def plot_difference_curves(plot_data: pd.DataFrame, benchmark_forecast: str, mul
     color_match = {
         "Spv production": "turquoise",
         "Wind production": "palegreen",
-        "Consumption": "green"
+        "Consumption": "green",
     }
 
     fig = px.bar()
 
     for i in range(len(plot_data.columns)):
-
         column_name = plot_data.columns[i]
         column_data = plot_data.iloc[:, i]
 
         print("plotting:", column_name)
 
-        if column_name == 'Residual load':
-            fig.add_trace(go.Scatter(x=plot_data.index, y=column_data, mode='lines', name=column_name, line=dict(color='red')))
+        if column_name == "Residual load":
+            fig.add_trace(
+                go.Scatter(
+                    x=plot_data.index,
+                    y=column_data,
+                    mode="lines",
+                    name=column_name,
+                    line=dict(color="red"),
+                )
+            )
         else:
-            fig.add_bar(x=plot_data.index, y=column_data, name=column_name, marker_color=color_match[column_name])
+            fig.add_bar(
+                x=plot_data.index,
+                y=column_data,
+                name=column_name,
+                marker_color=color_match[column_name],
+            )
 
     fig.update_layout(
         xaxis=dict(
-            rangeslider=dict(
-                visible=True
-            ),
+            rangeslider=dict(visible=True),
         ),
-        title=f'Lead time analysis at time {data_time} for area: {area.upper()}. Benchmark forecast: {benchmark_forecast.upper()}. Multi-source forecast: {multi_source_forecast.upper()}',
-        yaxis_title='Shift in MW',
-        xaxis_title='Time'
-
+        title=f"Lead time analysis at time {data_time} for area: {area.upper()}. Benchmark forecast: {benchmark_forecast.upper()}. Multi-source forecast: {multi_source_forecast.upper()}",
+        yaxis_title="Shift in MW",
+        xaxis_title="Time",
     )
     fig.update_layout(title_font=dict(size=25))
     fig.show()
@@ -301,16 +347,26 @@ def plot_difference_curves(plot_data: pd.DataFrame, benchmark_forecast: str, mul
 
 
 def main():
-    """This function runs through the main part of the code.
-    """
+    """This function runs through the main part of the code."""
 
-    instance_curves_names, absolute_curves_names = get_input_data(benchmark_forecast, multi_source_forecast, area)
+    instance_curves_names, absolute_curves_names = get_input_data(
+        benchmark_forecast, multi_source_forecast, area
+    )
     session = getkey()
-    instance_curves_df = get_instance_data(instance_curves_names=instance_curves_names, session=session,
-                                           issue_date=issue_date)
-    absolute_curves_df = get_absolute_data(absolute_curves_names=absolute_curves_names, session=session,
-                                           data_time=data_time, time_delta=time_delta)
-    plot_data = create_dataframe(instance_curves_df, absolute_curves_df, area=area, data_time=data_time)
+    instance_curves_df = get_instance_data(
+        instance_curves_names=instance_curves_names,
+        session=session,
+        issue_date=issue_date,
+    )
+    absolute_curves_df = get_absolute_data(
+        absolute_curves_names=absolute_curves_names,
+        session=session,
+        data_time=data_time,
+        time_delta=time_delta,
+    )
+    plot_data = create_dataframe(
+        instance_curves_df, absolute_curves_df, area=area, data_time=data_time
+    )
     plot_difference_curves(plot_data, benchmark_forecast, multi_source_forecast, area)
 
 

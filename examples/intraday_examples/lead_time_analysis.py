@@ -264,6 +264,12 @@ def plot_difference_curves(plot_data: pd.DataFrame, benchmark_forecast: str, mul
         multi_source_forecast (str): The user defined multi-source forecast.
         area: The user defined area.
     """
+    color_match = {
+        "Spv production": "turquoise",
+        "Wind production": "palegreen",
+        "Consumption": "green"
+    }
+
     fig = px.bar()
 
     for i in range(len(plot_data.columns)):
@@ -274,10 +280,9 @@ def plot_difference_curves(plot_data: pd.DataFrame, benchmark_forecast: str, mul
         print("plotting:", column_name)
 
         if column_name == 'Residual load':
-            fig.add_trace(
-                go.Scatter(x=plot_data.index, y=column_data, mode='lines', name=column_name, line=dict(color='black')))
+            fig.add_trace(go.Scatter(x=plot_data.index, y=column_data, mode='lines', name=column_name, line=dict(color='red')))
         else:
-            fig.add_bar(x=plot_data.index, y=column_data, name=column_name)
+            fig.add_bar(x=plot_data.index, y=column_data, name=column_name, marker_color=color_match[column_name])
 
     fig.update_layout(
         xaxis=dict(

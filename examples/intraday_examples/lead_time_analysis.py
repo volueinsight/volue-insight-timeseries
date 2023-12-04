@@ -1,4 +1,4 @@
-"""_summary_
+"""
 Lead time analysis for residual load, wind production, spv production and consumption:
 
 The user decides what forecast to use as benchmark forecast and what multi-source forecast to use.
@@ -16,7 +16,7 @@ pandas:                   A python library used to handle data. To install, run 
 os:                       Functionalities for interacting with the operating system. This is a standard python library,
                           so no installation is needed.
 plotly.express:           A module from plotly containing functions used to create graph plots. To install, run
-                          pip install plotly
+                          pip install Plotly
 plotly.graph_objects:     Another module of the plotly library used to create plots.
 
 
@@ -28,7 +28,7 @@ plotly.graph_objects:     Another module of the plotly library used to create pl
 # time_delta:             Defines how many hours of the multi-source curve that is to be retrieved.
 # data_time:              The timestamp of the forecasted value.
 
-    """
+"""
 from volue_insight_timeseries import Session
 import pandas as pd
 import os
@@ -52,9 +52,9 @@ def get_input_data(
     """This function maps the user inputs to available forecasts.
 
     Args:
-        benchmark_forecast (str): User defined benchmark forecast
-        multi_source_forecast (str): User defined multi-source forecast
-        area (str): User defined area
+        benchmark_forecast: User defined benchmark forecast
+        multi_source_forecast: User defined multi-source forecast
+        area: User defined area
 
     Returns:
         tuple: Two dictionaries containing curve names are returned as a tuple.
@@ -109,7 +109,6 @@ def getkey() -> Session:
         session (volue_insight_timeseries.session.Session): A session object that can communicate with WAPI.
     """
 
-    # config = Session(client_id="", client_secret="")
     config = os.getenv("WAPI_INI_READ")
     session = Session(config_file=config)
     return session
@@ -192,7 +191,7 @@ def get_absolute_data(
     session: Session,
     data_time: pd.Timestamp,
     time_delta: pd.Timedelta,
-):
+) -> pd.DataFrame:
     """This function uses the get_absolute_curve to retrieve the absolute curve data from all multi-source curves,
     then maps it into a dataframe.
 
@@ -200,7 +199,7 @@ def get_absolute_data(
         absolute_curves_names: A dictionary containing all absolute curve names (the multi-source curves).
         session: Session object to interact with WAPI.
         data_time: The timestamp of the forecasted value.
-        time_delta: _description_
+        time_delta: Defines how many hours of the multi-source curve that is to be retrieved.
 
     Returns:
         df: A dataframe containing all absolute curve data from the multi-source curves.
@@ -237,7 +236,7 @@ def timezone_mapping(area: str) -> str:
         return "cet"
 
 
-def map_name_to_label(curve_name: str):
+def map_name_to_label(curve_name: str) -> str:
     """This function matches one name from the defined dictionary below with an inputted curve name and returns
     a more readable name.
 
@@ -298,7 +297,7 @@ def plot_difference_curves(
         plot_data: A pandas dataframe containing the difference between the multi-source forecast-values and the
                    benchmark forecast-value.
         benchmark_forecast: The user defined benchmark forecast.
-        multi_source_forecast (str): The user defined multi-source forecast.
+        multi_source_forecast: The user defined multi-source forecast.
         area: The user defined area.
     """
     color_match = {

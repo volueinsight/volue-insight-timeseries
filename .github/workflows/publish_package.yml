@@ -58,12 +58,24 @@ jobs:
           resp=$(curl -X POST https://pypi.org/_/oidc/github/mint-token -d "{\"token\": ${oidc_token}}")
           api_token=$(jq '.token' <<< "${resp}")
           
-          echo "$resp"
-          
           # mask the newly minted API token, so that we don't accidentally leak it
-          # echo "::add-mask::${api_token}"
+           echo "::add-mask::${api_token}"
 
           # see the next step in the workflow for an example of using this step output
-          # echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
+           echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
 
-      
+      - name: Publish to PyPI
+        id: publish-pypi
+        run: |
+          echo "TWINE_USERNAME $TWINE_USERNAME"
+          echo "TWINE_PASSWORD $TWINE_PASSWORD"
+          pypi_index=pypi
+          VERSION=${{ steps.read-version.outputs.VERSION }}
+          echo "Release to $pypi_index."
+          rm -rf dist
+          python setup.py sdist bdist_wheel
+          twine upload --verbose --repository $pypi_index dist/volue-insight-timeseries-$VERSION.tar.gz dist/volue_insight_timeseries-$VERSION-*.whl
+          echo "Done !"
+        env:
+          TWINE_USERNAME: ${{ vars.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ steps.mint-token.outputs.api-token }}

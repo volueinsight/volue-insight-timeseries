@@ -3,7 +3,7 @@ name: Publish package test
 on:
   push:
     branches:
-      - test-2fa-publish
+      - master
 
   workflow_dispatch:
     inputs:

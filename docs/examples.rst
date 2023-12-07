@@ -94,18 +94,19 @@ General examples
 Intraday examples
 --------------------------------
 
-* Simple example on how to get the intraday price forecast and on how to get the latest intraday price forecast.
+* Simple example on how to get the intraday price forecast.
   (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/intraday_price_forecast.py>`_ ,
   :download:`[download] <../examples/intraday_examples/intraday_price_forecast.py>`)
 * Example on how to get the absolute forecast for the intraday price. The absolute forecast shows the price development over time for a
   specific contract. (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
   :download:`[download] <../examples/intraday_examples/absolute_intraday_price_forecast.py>`)
 * Example on how to create lead time analysis plots. These plots show how the difference between a chosen benchmark
-forecast and a multi-source forecast develops over time (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
+forecast and one of our intraday forecasts develops over time (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
   :download:`[download] <../examples/intraday_examples/lead_time_analysis.py>`)
 
 Reproduce figures from volueinsight.com
 -------------------------------------
+
 * Reproduce one of the 4 following Fundamental figures for any region
   (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/master/examples/reproduce_wattsight_plots/ws_fundamentals_hourly.py>`_ ,
   :download:`[download] <../examples/reproduce_wattsight_plots/ws_fundamentals_hourly.py>`)

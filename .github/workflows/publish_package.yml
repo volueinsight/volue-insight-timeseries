@@ -42,21 +42,15 @@ jobs:
           echo "VERSION=$version" >> "$GITHUB_OUTPUT"
           echo "version is $version"
 
-      - name: Publish to PyPI
-        id: publish-pypi
+      - name: Build dist
+        id: build-dist
         run: |
-          echo "TWINE_USERNAME $TWINE_USERNAME"
-          echo "TWINE_PASSWORD $TWINE_PASSWORD"
-          pypi_index=pypi
+          
           VERSION=${{ steps.read-version.outputs.VERSION }}
-
-          echo "Release to $pypi_index."
           rm -rf dist
           python setup.py sdist bdist_wheel
-          twine upload --verbose --repository $pypi_index dist/volue-insight-timeseries-$VERSION.tar.gz dist/volue_insight_timeseries-$VERSION-*.whl
 
-          echo "Done !"
-
-        env:
-          TWINE_USERNAME: ${{ vars.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/

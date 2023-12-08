@@ -1,11 +1,11 @@
 """
 Lead time analysis for residual load, wind production, spv production and consumption:
 
-The user decides what forecast to use as benchmark forecast and what multi-source forecast to use.
+The user decides what forecast to use as benchmark forecast and what intraday forecast to use.
 The user also defines what issue date to look at from the benchmark forecast, the timestamp of interest (data time) and
 the time delta (how far back to look).
 This code then subtracts the estimated residual load, wind production, spv production and consumption from the benchmark
-forecast with the multi-source forecast. This way we can investigate how the multi-source forecast differs from the
+forecast with the intraday forecast. This way we can investigate how the intraday forecast differs from the
 benchmark forecast for each release (each 15 min).
 
 
@@ -23,9 +23,9 @@ plotly.graph_objects:     Another module of the plotly library used to create pl
 # User defined inputs:
 # area:                   The area of interest, eg. DE, PL etc.
 # benchmark_forecast:       'ec00', 'ec12', 'entsoe_da' or 'entsoe_intraday'
-# multi-source_forecast:      'intraday' or 'intraday_lastec'
+# intraday_forecast:      'intraday' or 'intraday_lastec'
 # issue_date:             The date where the set1 curve (instance curve) was issued.
-# time_delta:             Defines how many hours of the multi-source curve that is to be retrieved.
+# time_delta:             Defines how many hours of the intraday curve that is to be retrieved.
 # data_time:              The timestamp of the forecasted value.
 
 """
@@ -39,7 +39,7 @@ import plotly.graph_objects as go
 # User defined inputs:
 area = "DE"
 benchmark_forecast = "ec00"
-multi_source_forecast = "intraday"
+intraday_forecast = "intraday"
 issue_date = "2023-11-26T00:00"
 time_delta = 12
 data_time = "2023-11-27T10:00"
@@ -47,13 +47,13 @@ data_time = "2023-11-27T10:00"
 
 
 def get_input_data(
-    benchmark_forecast: str, multi_source_forecast: str, area: str
+    benchmark_forecast: str, intraday_forecast: str, area: str
 ) -> tuple:
     """This function maps the user inputs to available forecasts.
 
     Args:
         benchmark_forecast: User defined benchmark forecast
-        multi_source_forecast: User defined multi-source forecast
+        intraday_forecast: User defined intraday forecast
         area: User defined area
 
     Returns:
@@ -85,7 +85,7 @@ def get_input_data(
             "con": f"con {area} intraday entso-e mwh/h {tz} h f",
             "rdl": f"rdl {area} intraday entso-e mwh/h {tz} h f",
         },
-        "intraday": {
+        "multi-source_forecast": {
             "wnd": f"pro {area} wnd intraday mwh/h {tz} min15 f",
             "spv": f"pro {area} spv intraday mwh/h {tz} min15 f",
             "con": f"con {area} intraday mwh/h {tz} min15 f",
@@ -98,7 +98,7 @@ def get_input_data(
             "rdl": f"rdl {area} intraday mwh/h {tz} min15 f",
         },
     }
-    return curve_dict[benchmark_forecast], curve_dict[multi_source_forecast]
+    return curve_dict[benchmark_forecast], curve_dict[intraday_forecast]
 
 
 def getkey() -> Session:
@@ -192,17 +192,17 @@ def get_absolute_data(
     data_time: pd.Timestamp,
     time_delta: pd.Timedelta,
 ) -> pd.DataFrame:
-    """This function uses the get_absolute_curve to retrieve the absolute curve data from all multi-source curves,
+    """This function uses the get_absolute_curve to retrieve the absolute curve data from all intraday curves,
     then maps it into a dataframe.
 
     Args:
-        absolute_curves_names: A dictionary containing all absolute curve names (the multi-source curves).
+        absolute_curves_names: A dictionary containing all absolute curve names (the intraday curves).
         session: Session object to interact with WAPI.
         data_time: The timestamp of the forecasted value.
-        time_delta: Defines how many hours of the multi-source curve that is to be retrieved.
+        time_delta: Defines how many hours of the intraday curve that is to be retrieved.
 
     Returns:
-        df: A dataframe containing all absolute curve data from the multi-source curves.
+        df: A dataframe containing all absolute curve data from the intraday curves.
     """
 
     df = pd.DataFrame()
@@ -263,15 +263,15 @@ def create_dataframe(
 ) -> pd.DataFrame:
     """This function takes two dataframes as input, instance_curves_df and absolute_curves_df and subtracts each of
     the base forecasts' values at the data time timestamp from each value in the corresponding columns in the
-    multi-source dataframe.
+    intraday dataframe.
     Args:
         instance_curves_df: A dataframe containing all retrieved data from all the benchmark curves.
-        absolute_curves_df: A dataframe containing all retrieved data from all the multi-source curves.
+        absolute_curves_df: A dataframe containing all retrieved data from all the intraday curves.
         area: The user defined area.
         data_time: The timestamp of the forecasted value.
 
     Returns:
-        difference_curves: A dataframe containing the difference values between benchmark forecast and multi-source
+        difference_curves: A dataframe containing the difference values between benchmark forecast and intraday
         forecast. Ready to be plotted.
     """
     data_time_timezone = pd.Timestamp(data_time, tz=timezone_mapping(area))
@@ -287,17 +287,17 @@ def create_dataframe(
 def plot_difference_curves(
     plot_data: pd.DataFrame,
     benchmark_forecast: str,
-    multi_source_forecast: str,
+    intraday_forecast: str,
     area: str,
 ):
     """This function plots the data generated in create_dataframe. Production and consumption are plotted as bars,
     but residual load is plotted as a trace/line plot.
 
     Args:
-        plot_data: A pandas dataframe containing the difference between the multi-source forecast-values and the
+        plot_data: A pandas dataframe containing the difference between the intraday forecast-values and the
                    benchmark forecast-value.
         benchmark_forecast: The user defined benchmark forecast.
-        multi_source_forecast: The user defined multi-source forecast.
+        intraday_forecast: The user defined intraday forecast.
         area: The user defined area.
     """
     color_match = {
@@ -336,7 +336,7 @@ def plot_difference_curves(
         xaxis=dict(
             rangeslider=dict(visible=True),
         ),
-        title=f"Lead time analysis at time {data_time} for area: {area.upper()}. Benchmark forecast: {benchmark_forecast.upper()}. Multi-source forecast: {multi_source_forecast.upper()}",
+        title=f"Lead time analysis at time {data_time} for area: {area.upper()}. Benchmark forecast: {benchmark_forecast.upper()}. intraday forecast: {intraday_forecast.upper()}",
         yaxis_title="Shift in MW",
         xaxis_title="Time",
     )
@@ -349,7 +349,7 @@ def main():
     """This function runs through the main part of the code."""
 
     instance_curves_names, absolute_curves_names = get_input_data(
-        benchmark_forecast, multi_source_forecast, area
+        benchmark_forecast, intraday_forecast, area
     )
     session = getkey()
     instance_curves_df = get_instance_data(
@@ -366,7 +366,7 @@ def main():
     plot_data = create_dataframe(
         instance_curves_df, absolute_curves_df, area=area, data_time=data_time
     )
-    plot_difference_curves(plot_data, benchmark_forecast, multi_source_forecast, area)
+    plot_difference_curves(plot_data, benchmark_forecast, intraday_forecast, area)
 
 
 if __name__ == "__main__":

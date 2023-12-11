@@ -101,7 +101,7 @@ Intraday examples
   specific contract. (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
   :download:`[download] <../examples/intraday_examples/absolute_intraday_price_forecast.py>`)
 * Example on how to create lead time analysis plots. These plots show how the difference between a chosen benchmark
-forecast and one of our intraday forecasts develops over time (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
+  forecast and one of our intraday forecasts develops over time (`[view on github] <https://github.com/volueinsight/volue-insight-timeseries/blob/development/examples/intraday_examples/absolute_intraday_price_forecast.py>`_ ,
   :download:`[download] <../examples/intraday_examples/lead_time_analysis.py>`)
 
 Reproduce figures from volueinsight.com

@@ -13,9 +13,9 @@ the latest Python version.
 ## Documentation
 
 The 
-[documentation](https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/latest/ 
+[documentation](https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/master/) 
 with various 
-[examples](https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/latest/examples.html)
+[examples](https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/master/examples.html)
 is hosted on Read the Docs.
 
 ## Installation

@@ -4,7 +4,7 @@ A number of use cases is presented in order to introduce different data structur
 
 ## Dependencies
 
-[Volue Insight API python library](https://github.com/wattsight/wapi-python/)   
+[Volue Insight API python library](https://github.com/wattsight/volue-insight-timeseries/)   
 [Jupyter (iPython) Notebooks](http://jupyter.org/)   
 [Pandas Data Analysis library](http://pandas.pydata.org/)   
 [Plotly Charting library](https://plot.ly/)   

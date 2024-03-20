@@ -45,7 +45,7 @@ curve_names = ['pro be spv intraday mwh/h cet min15 a',
                'pro dk2 wnd intraday mwh/h cet min15 a',
                'pro fr wnd intraday mwh/h cet min15 a']
 
-# search for the curves in wapi and return curve object
+# search for the curves in the api and return curve object
 curves = session.search(name=curve_names)
 
 # Set up the event listener for the curves

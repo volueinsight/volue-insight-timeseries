@@ -7,7 +7,7 @@ Quickstart
 
     $ pip install -U volue_insight_timeseries
 
-2. Import wapi and create a :class:`~volue_insight_timeseries.session.Session` to connect to the database using
+2. Import volue_insight_timeseries and create a :class:`~volue_insight_timeseries.session.Session` to connect to the database using
    your `authentication credentials`_ ::
 
         import volue_insight_timeseries

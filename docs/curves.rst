@@ -1,12 +1,12 @@
 .. _curves:
 
-Access data from WAPI
+Access data from the API
 =====================
 
 Example
 -------
 
-The data in WAPI is stored in ``curves`` . A curve is a collection of metadata,
+The data in the API is stored in ``curves`` . A curve is a collection of metadata,
 describing one or more time series.
 There are 4 types of curves:
 
@@ -15,7 +15,7 @@ There are 4 types of curves:
 * INSTANCES
 * TAGGED_INSTANCES
 
-This chapter describes how to search for available curves in WAPI and
+This chapter describes how to search for available curves in the API and
 how to access the stored data, based on the given curve type.
 
 .. _search-curves:
@@ -51,14 +51,14 @@ function.
 The valid values for each attribute can be accessed using
 the specific ``session.get_ATTRIBUTE`` function:
 
-.. automethod:: wapi.session.Session.search
+.. automethod:: volue_insight_timeseries.session.Session.search
     :noindex:
 
 
 Getting a curve object
 -----------------------
 
-In order to fetch data from WAPI, you first have to fetch the curve you want
+In order to fetch data from the API, you first have to fetch the curve you want
 to read the data from. You can either do this by
 :ref:`searching for curves<search-curves>` ,
 since this will already return a list of curve objects. Or you can get
@@ -207,13 +207,13 @@ You can also fetch the latest available instance using the
     by using additional inputs. Have a look at the detailed function
     descriptions below and at the provided :ref:`examples<examples>`.
 
-.. automethod:: wapi.curves.InstanceCurve.get_instance
+.. automethod:: volue_insight_timeseries.curves.InstanceCurve.get_instance
     :noindex:
 
-.. automethod:: wapi.curves.InstanceCurve.search_instances
+.. automethod:: volue_insight_timeseries.curves.InstanceCurve.search_instances
     :noindex:
 
-.. automethod:: wapi.curves.InstanceCurve.get_latest
+.. automethod:: volue_insight_timeseries.curves.InstanceCurve.get_latest
     :noindex:
 
 

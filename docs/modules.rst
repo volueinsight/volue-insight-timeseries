@@ -1,8 +1,8 @@
-WAPI Python API References
+Python API References
 ============================
 
 
-wapi.curves module
+volue_insight_timeseries.curves module
 -------------------
 
 .. automodule:: volue_insight_timeseries.curves
@@ -11,7 +11,7 @@ wapi.curves module
     :show-inheritance:
 
 
-wapi.session module
+volue_insight_timeseries.session module
 --------------------
 
 .. automodule:: volue_insight_timeseries.session
@@ -19,7 +19,7 @@ wapi.session module
     :undoc-members:
     :show-inheritance:
 
-wapi.events module
+volue_insight_timeseries.events module
 --------------------
 
 .. automodule:: volue_insight_timeseries.events
@@ -27,7 +27,7 @@ wapi.events module
     :undoc-members:
     :show-inheritance:
 
-wapi.util module
+volue_insight_timeseries.util module
 --------------------
 
 .. automodule:: volue_insight_timeseries.util

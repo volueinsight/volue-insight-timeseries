@@ -1,7 +1,7 @@
 """
 This simple example reads data from a TAGGED_INSTANCE curve that contains our 
 intraday price forecast. Have a look at the documentation for further information:
-https://wattsight-wapi-python.readthedocs-hosted.com/en/latest/
+https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/latest/
 """
 
 import volue_insight_timeseries
@@ -14,7 +14,7 @@ my_config_file = 'path/to/your/config.ini'
 # Create a session to connect to Volue Insight API.
 session = volue_insight_timeseries.Session(config_file=my_config_file)
 # or
-#session = wapi.Session(client_id='client id', client_secret='client secret')
+#session = volue_insight_timeseries.Session(client_id='client id', client_secret='client secret')
 ############################################
 
 # Define curve name to read, in this case the intraday price forecast.

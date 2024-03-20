@@ -2,7 +2,7 @@
 This example fetches an absolute forecast from a TAGGED_INSTANCE curve that contains our intraday price forecast.
 The absolute forecast follows updates of our intraday price forecast for a specific hourly contract.
 Have a look at the documentation for further information:
-https://wattsight-wapi-python.readthedocs-hosted.com/en/latest/
+https://wattsight-volue-insight-timeseries.readthedocs-hosted.com//en/latest/
 """
 
 import volue_insight_timeseries

@@ -42,9 +42,9 @@ This can also be set in the config file as seen in :download:`sample config file
 Using a proxy
 -------------
 
-The library responds to the standard proxy evironment variables
+The library responds to the standard proxy environment variables
 (https_proxy, etc.) if they are present.
 
 
-.. _sample config file: https://github.com/wattsight/wapi-python/tree/master/sampleconfig.ini
+.. _sample config file: https://github.com/volueinsight/volue-insight-timeseries/blob/master/sampleconfig.ini
 .. _here: https://api.volueinsight.com/#documentation

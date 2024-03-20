@@ -1,7 +1,7 @@
 """
 This simple example reads data from a TAGGED_INSTANCE curve that contains our 
 intraday price forecast. Have a look at the documentation for further information:
-https://wattsight-volue-insight-timeseries.readthedocs-hosted.com//en/latest/
+https://wattsight-volue-insight-timeseries.readthedocs-hosted.com/en/latest/
 """
 
 import volue_insight_timeseries

@@ -1,4 +1,4 @@
-sphinx==7.2.6
+sphinx==7.3.6
 sphinx-rtd-theme==2.0.0
 pillow==10.2.0
 mock==5.1.0

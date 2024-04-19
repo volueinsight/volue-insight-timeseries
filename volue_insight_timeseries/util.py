@@ -44,6 +44,7 @@ _TS_FREQ_TABLE = {
 # Mapping from Pandas to TS is built from map above,
 # with some additions to support older versions of pandas
 _PANDAS_FREQ_TABLE = {
+    'YS-JAN': 'Y',
     'AS-JAN': 'Y',
     'AS': 'Y',
     '2QS-JAN': 'S',

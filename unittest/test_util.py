@@ -1,7 +1,6 @@
 import pytest
-
-from volue_insight_timeseries.util import TS, TIME_SERIES
-
+import pandas as pd
+from volue_insight_timeseries.util import TS, TIME_SERIES, _TS_FREQ_TABLE, _PANDAS_FREQ_TABLE
 
 @pytest.fixture
 def ts1():
@@ -36,16 +35,28 @@ def ts4():
     return TS(id=4, name='Test 2038 issue', frequency='D',
               time_zone='CET', curve_type=TIME_SERIES, points=points)
 
+@pytest.fixture
+def ts5():
+    points = [[0, 220]]
+    return TS(id=5, name='Test frequency', frequency='D',
+              time_zone='CET', curve_type=TIME_SERIES, points=points)
+
 def test_to_pandas_2038(ts4):
     pd_series = ts4.to_pandas()
     assert len(pd_series.index) == len(ts4.points)
 
-def test_to_pandas(ts1):
+def test_to_pandas(ts1, ts5):
     pd_series = ts1.to_pandas()
     assert len(pd_series.index) == len(ts1.points)
 
+    for k, v in _TS_FREQ_TABLE.items():
+        ts5.frequency = k
+        pd_series_freq = ts5.to_pandas().index.freqstr
+        pd_series_freq = pd_series_freq.replace('-JAN', '')
+        assert pd_series_freq == v
 
-def test_from_pandas(ts1):
+
+def test_from_pandas(ts1, ts5):
     pd_series = ts1.to_pandas()
     re_ts = TS.from_pandas(pd_series)
 
@@ -56,6 +67,12 @@ def test_from_pandas(ts1):
     for dp1, dp2 in zip(re_ts.points, ts1.points):
         assert dp1 == dp2
 
+    for k, v in _PANDAS_FREQ_TABLE.items():
+        idx = pd.DatetimeIndex(["2024-01-01 00:00:00+02:00"], freq=k)
+        pd_series_freq = pd.Series(name="test pd", index=idx, data=[220])
+        re_ts5_freq = TS.from_pandas(pd_series_freq).frequency
+        re_ts5_freq = re_ts5_freq.replace('-JAN', '')
+        assert re_ts5_freq == v
 
 def test_sum_ts(ts1, ts2, ts3):
     points = [[0, 420], [2678400000, 420],
@@ -106,6 +123,3 @@ def test_fullname(ts1):
 
     ts1.name = None
     assert ts1.fullname == "1 TIME_SERIES CET M"
-
-
-

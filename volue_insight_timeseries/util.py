@@ -57,8 +57,8 @@ _PANDAS_FREQ_TABLE = {
     '5T': 'MIN5',
     'T': 'MIN',
 }
-for k, v in _TS_FREQ_TABLE.items():
-    _PANDAS_FREQ_TABLE[v.upper()] = k
+for ts_freq, pandas_freq in _TS_FREQ_TABLE.items():
+    _PANDAS_FREQ_TABLE[pandas_freq.upper()] = ts_freq
 
 
 class CurveException(Exception):

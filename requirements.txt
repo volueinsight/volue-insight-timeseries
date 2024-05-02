@@ -3,4 +3,4 @@ sseclient-py>=1.7
 pandas>=1.5.0
 future>=0.16
 matplotlib==3.8.4
-plotly==5.21.0
+plotly==5.22.0

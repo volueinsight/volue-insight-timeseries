@@ -3,7 +3,7 @@
 Examples
 ========
 
-To run the examples, you need to install ``matplotlib`` and ``plotly``. Using pip, you can install them with the following command:
+To run the examples, you need to install ``matplotlib`` and ``plotly``. Using ``pip``, you can install them with the following command:
 
 .. code-block:: bash
 

@@ -2,6 +2,8 @@ from past.types import basestring
 import warnings
 
 from . import util
+from session import MetadataException
+from util import Range
 
 
 class BaseCurve:
@@ -35,7 +37,7 @@ class BaseCurve:
         if last is not None:
             args.append(util.make_arg('{}to'.format(prefix), last))
 
-    def _add_functions(self, args, time_zone, filter, function, frequency, output_time_zone):
+    def _add_functions(self, args, time_zone=None, filter=None, function=None, frequency=None, output_time_zone=None):
         if time_zone is not None:
             args.append(util.make_arg('time_zone', time_zone))
         if filter is not None:
@@ -65,7 +67,7 @@ class BaseCurve:
 
 class TimeSeriesCurve(BaseCurve):
     def get_data(self, data_from=None, data_to=None, time_zone=None, filter=None,
-                 function=None, frequency=None, output_time_zone=None):
+                 function=None, frequency=None, output_time_zone=None) -> util.TS:
         """ Getting data from Time Series curves
 
         A Time Series curves holds a single time series.
@@ -148,6 +150,24 @@ class TimeSeriesCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.TIME_SERIES)
 
+    def get_data_range(self, date_from=None, date_to=None, output_time_zone=None) -> Range:
+        """
+        GET data range from a timeseries curve
+        """
+
+        args = []
+        astr = ''
+        self._add_from_to(args, date_from, date_to)
+        self._add_functions(args, output_time_zone=output_time_zone)
+        if len(args) > 0:
+            astr = '{}'.format('&'.join(args))
+        url = '/api/series/{}/range?{}'.format(self.id, astr)
+        result = self._load_data(url, 'Failed to load curve date range')
+        if result is None:
+            return result
+
+        return Range.from_dict(result, tz_name=output_time_zone)
+
 
 class TaggedCurve(BaseCurve):
     def get_tags(self):
@@ -162,7 +182,7 @@ class TaggedCurve(BaseCurve):
         return self._load_data(url, 'Failed to fetch tags')
 
     def get_data(self, tag=None, data_from=None, data_to=None, time_zone=None, filter=None,
-                 function=None, frequency=None, output_time_zone=None):
+                 function=None, frequency=None, output_time_zone=None) -> util.TS:
         """ Getting data from TAGGED curves
 
         A tagged curve holds a set of closely related time series, each
@@ -258,6 +278,30 @@ class TaggedCurve(BaseCurve):
         if result is None:
             return result
         res = [util.TS(input_dict=r, curve_type=util.TAGGED) for r in result]
+        if unwrap and len(res) == 1:
+            res = res[0]
+        return res
+
+    def get_data_range(self, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Range:
+        """
+        GET data range for an instance from a tagged curve
+        """
+        unwrap = False
+        if tag is None:
+            args = []
+            unwrap = True
+        else:
+            if isinstance(tag, basestring):
+                unwrap = True
+            args=[util.make_arg('tag', tag)]
+        self._add_from_to(args, date_from, date_to)
+        self._add_functions(args, output_time_zone=output_time_zone)
+        astr = '&'.join(args)
+        url = '/api/series/tagged/{}/range?{}'.format(self.id, astr)
+        result = self._load_data(url, 'Failed to load tagged curve date range')
+        if result is None:
+            return result
+        res = [Range.from_dict(r, tz_name=output_time_zone) for r in result]
         if unwrap and len(res) == 1:
             res = res[0]
         return res
@@ -800,6 +844,25 @@ class InstanceCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.INSTANCES)
 
+    def get_data_range(self, issue_date, date_from=None, date_to=None, output_time_zone=None) -> Range:
+        """
+        GET data range for an instance from an instance curve
+        Note that issue_date is a required parameter
+        """
+        if not issue_date:
+            raise ValueError("issue_date is required for data range endpoint")
+        args = [util.make_arg('issue_date', issue_date)]
+        self._add_from_to(args, date_from, date_to)
+        self._add_functions(args, output_time_zone=output_time_zone)
+
+        astr = "&".join(args)
+        url = '/api/instances/{}/range?{}'.format(self.id, astr)
+        result = self._load_data(url, 'Failed to load instance date range')
+        if result is None:
+            return result
+
+        return Range.from_dict(result, tz_name=output_time_zone)
+
 
 class TaggedInstanceCurve(BaseCurve):
     def get_tags(self):
@@ -1215,7 +1278,6 @@ class TaggedInstanceCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.TAGGED_INSTANCES)
 
-
     def get_relative(self, data_offset, data_max_length=None, tag=None, issue_date_from=None, issue_date_to=None,
                      issue_dates=None, issue_weekdays=None, issue_days=None, issue_months=None, issue_times=None,
                      data_from=None, data_to=None, time_zone=None, filter=None, function=None,
@@ -1411,3 +1473,32 @@ class TaggedInstanceCurve(BaseCurve):
         if result is None:
             return result
         return util.TS(input_dict=result, curve_type=util.TAGGED_INSTANCES)
+
+    def get_data_range(self, issue_date, tag=None, date_from=None, date_to=None,
+                       output_time_zone=None) -> Range:
+        """
+        GET data range for an instance from an instance curve
+        """
+        if not issue_date:
+            raise ValueError("issue_date is required for data range endpoint")
+        args=[util.make_arg('issue_date', issue_date)]
+        unwrap = False
+        if tag is None:
+            unwrap = True
+        else:
+            if isinstance(tag, basestring):
+                unwrap = True
+            args.append(util.make_arg('tag', tag))
+        self._add_from_to(args, date_from, date_to)
+        self._add_functions(args, output_time_zone=output_time_zone)
+
+        astr = "&".join(args)
+        url = '/api/instances/tagged/{}/range?{}'.format(self.id, astr)
+        
+        result = self._load_data(url, 'Failed to load tagged instance date range')
+        if result is None:
+            return result
+        res = [Range.from_dict(r, tz_name=output_time_zone) for r in result]
+        if unwrap and len(res) == 1:
+            res = res[0]
+        return res

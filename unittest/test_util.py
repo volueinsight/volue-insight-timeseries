@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from volue_insight_timeseries.util import TS, TIME_SERIES, _TS_FREQ_TABLE, _PANDAS_FREQ_TABLE
+from volue_insight_timeseries.util import TS, TIME_SERIES
 
 @pytest.fixture
 def ts1():

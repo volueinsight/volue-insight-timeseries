@@ -41,7 +41,7 @@ _TS_FREQ_TABLE = {
     'MIN': 'min',
 }
 
-# Mapping from Pandas to TS is built from map above,
+# Mapping from various versions of Pandas to TS is built from map above,
 # with some additions to support older versions of pandas
 _PANDAS_FREQ_TABLE = {
     'YS-JAN': 'Y',

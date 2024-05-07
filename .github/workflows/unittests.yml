@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.9', '3.10' , '3.11']
+        pandas-versions: [ '==1.5.2', '>=2.2.0']
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.12.1
@@ -31,9 +32,9 @@ jobs:
         run: |
           REQS="-r requirements.txt -r test-requirements.txt"
           pip install --upgrade --upgrade-strategy eager ${REQS}
+          pip install pandas${{ matrix.pandas-versions }}
 
       - name: Run tests
         run: |
           python -m pytest -vv
 
-            

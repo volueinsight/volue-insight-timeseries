@@ -2,7 +2,7 @@ from past.types import basestring
 import warnings
 
 from . import util
-from util import Range
+from typing import Optional
 
 
 class BaseCurve:
@@ -48,7 +48,7 @@ class BaseCurve:
         if output_time_zone is not None:
             args.append(util.make_arg('output_time_zone', output_time_zone))
 
-    def _load_data(self, url, failmsg, urlbase=None) -> dict | None:
+    def _load_data(self, url, failmsg, urlbase=None) -> Optional[dict]:
         if urlbase is None:
             urlbase = self._session.urlbase
         response = self._session.data_request('GET', urlbase, url)
@@ -149,14 +149,13 @@ class TimeSeriesCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.TIME_SERIES)
 
-    def get_data_range(self, date_from=None, date_to=None, output_time_zone=None) -> Range | None:
+    def get_data_range(self, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
         """
         GET data range from a timeseries curve
         """
 
         args = []
         self._add_from_to(args, date_from, date_to)
-        self._add_functions(args, output_time_zone=output_time_zone)
         astr = '?{}'.format('&'.join(args)) if len(args) > 0 else ''
         url = '/api/series/{}/range{}'.format(self.id, astr)
         
@@ -165,7 +164,7 @@ class TimeSeriesCurve(BaseCurve):
         if result is None:
             return result
 
-        return Range.from_dict(result, tz_name=output_time_zone)
+        return util.Range.from_dict(result, tz_name=output_time_zone)
 
 
 class TaggedCurve(BaseCurve):
@@ -281,7 +280,7 @@ class TaggedCurve(BaseCurve):
             res = res[0]
         return res
 
-    def get_data_range(self, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Range | None:
+    def get_data_range(self, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
         """
         GET data range for an instance from a tagged curve
         """
@@ -289,7 +288,6 @@ class TaggedCurve(BaseCurve):
         if tag:
             args.append(util.make_arg('tag', tag))
         self._add_from_to(args, date_from, date_to)
-        self._add_functions(args, output_time_zone=output_time_zone)
         astr = '&'.join(args)
         url = '/api/series/tagged/{}/range?{}'.format(self.id, astr)
 
@@ -298,7 +296,7 @@ class TaggedCurve(BaseCurve):
         if result is None:
             return result
 
-        return Range.from_dict(result, tz_name=output_time_zone)
+        return util.Range.from_dict(result, tz_name=output_time_zone)
 
 
 class InstanceCurve(BaseCurve):
@@ -838,7 +836,7 @@ class InstanceCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.INSTANCES)
 
-    def get_data_range(self, issue_date, date_from=None, date_to=None, output_time_zone=None) -> Range | None:
+    def get_data_range(self, issue_date, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
         """
         GET data range for an instance from an instance curve
         Note that issue_date is a required parameter
@@ -847,7 +845,6 @@ class InstanceCurve(BaseCurve):
             raise ValueError("issue_date is required for data range endpoint")
         args = [util.make_arg('issue_date', issue_date)]
         self._add_from_to(args, date_from, date_to)
-        self._add_functions(args, output_time_zone=output_time_zone)
         astr = "&".join(args)
         url = '/api/instances/{}/range?{}'.format(self.id, astr)
         
@@ -856,7 +853,7 @@ class InstanceCurve(BaseCurve):
         if result is None:
             return result
 
-        return Range.from_dict(result, tz_name=output_time_zone)
+        return util.Range.from_dict(result, tz_name=output_time_zone)
 
 
 class TaggedInstanceCurve(BaseCurve):
@@ -1469,7 +1466,7 @@ class TaggedInstanceCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.TAGGED_INSTANCES)
 
-    def get_data_range(self, issue_date, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Range | None:
+    def get_data_range(self, issue_date, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
         """
         GET data range for an instance from an instance curve
         """
@@ -1479,7 +1476,6 @@ class TaggedInstanceCurve(BaseCurve):
         if tag:
             args.append(util.make_arg('tag', tag))
         self._add_from_to(args, date_from, date_to)
-        self._add_functions(args, output_time_zone=output_time_zone)
         astr = "&".join(args)
         url = '/api/instances/tagged/{}/range?{}'.format(self.id, astr)
 
@@ -1488,4 +1484,4 @@ class TaggedInstanceCurve(BaseCurve):
         if result is None:
             return result
 
-        return Range.from_dict(result, tz_name=output_time_zone)
+        return util.Range.from_dict(result, tz_name=output_time_zone)

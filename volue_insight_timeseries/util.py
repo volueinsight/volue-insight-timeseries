@@ -4,14 +4,13 @@
 #
 
 import calendar
-import datetime
 import dateutil.parser
 import pandas as pd
 import numpy as np
 from past.types import basestring
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Optional, Dict
+from datetime import datetime, tzinfo, date
 
 try:
     from urllib.parse import quote_plus
@@ -132,7 +131,7 @@ class TS(object):
         for row in self.points:
             if len(row) != 2:
                 raise ValueError('Points have unexpected contents')
-            dt = datetime.datetime.fromtimestamp(row[0] / 1000.0, self.tz)
+            dt = datetime.fromtimestamp(row[0] / 1000.0, self.tz)
             index.append(dt)
             values.append(row[1])
         res = pd.Series(name=name, index=index, data=values)
@@ -267,7 +266,7 @@ def parsetime(datestr, tz=None):
     d = dateutil.parser.parse(datestr)
 
     if tz is not None:
-        if not isinstance(tz, datetime.tzinfo):
+        if not isinstance(tz, tzinfo):
             tz = parse_tz(tz)
 
         if d.tzinfo is not None:
@@ -340,7 +339,7 @@ def make_arg(key, value):
     if hasattr(value, '__iter__') and not isinstance(value, basestring):
         return '&'.join([make_arg(key, v) for v in value])
 
-    if isinstance(value, datetime.date):
+    if isinstance(value, date):
         tmp = value.isoformat()
     else:
         tmp = '{}'.format(value)
@@ -375,7 +374,7 @@ class Range:
         return cls(begin, end)
 
     @classmethod
-    def parse_datetime(cls, s: Optional[str], tz: datetime.tzinfo) -> Optional[datetime]:
+    def parse_datetime(cls, s: Optional[str], tz: tzinfo) -> Optional[datetime]:
         # “Z” is replaced by “+00:00" because it is not handled by the datetime library
         return datetime.fromisoformat(s.replace('Z', '+00:00')).astimezone(tz) if s else None
 

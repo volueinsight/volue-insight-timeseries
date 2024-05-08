@@ -50,7 +50,6 @@ def test_all_curve_types_get_data_range__empty(dummy_curve_id, curve_class, meth
     assert ts.get_data_range(*method_args) is None
 
 
-# Define the classes and their URL bases
 curve_info = [
     (InstanceCurve, "/api/instances/"),
     (TaggedCurve, "/api/series/tagged/"),
@@ -58,7 +57,6 @@ curve_info = [
     (TimeSeriesCurve, "/api/series/")
 ]
 
-# Define the range parameters
 range_params = [
     ("2024-05-08T00:00:00+02:00", "2024-05-11T22:00:00+02:00"),
     (None, None)

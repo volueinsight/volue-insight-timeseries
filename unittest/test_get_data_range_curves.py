@@ -8,6 +8,46 @@ from volue_insight_timeseries.curves import InstanceCurve, TaggedCurve, TaggedIn
 from helper.common import CONFIG_FILE
 from helper.mock import RangeResponseMock, SessionMock
 
+@pytest.mark.parametrize(
+    "curve_class, method_args",
+    [
+        (InstanceCurve, ["2024-05-08"]),
+        (TaggedCurve, []),
+        (TaggedInstanceCurve, ["2024-05-08"]),
+        (TimeSeriesCurve, [])
+    ]
+)
+def test_curve_get_data_range__exception(dummy_curve_id, curve_class, method_args):
+    # arrange
+    mock_session = SessionMock(resp=RangeResponseMock(HTTPStatus.INTERNAL_SERVER_ERROR, None, None), config_file=CONFIG_FILE)
+    ts = curve_class(dummy_curve_id, metadata=None, session=mock_session)
+
+    # act & assert
+    with pytest.raises(CurveException):
+        _ = ts.get_data_range(*method_args)
+
+
+@pytest.mark.parametrize(
+    "curve_class, method_args, empty_status_code",
+    [
+        (TimeSeriesCurve, ["1024-05-08"], HTTPStatus.NO_CONTENT),
+        (TimeSeriesCurve, ["1024-05-08"], HTTPStatus.NOT_FOUND),
+        (TaggedInstanceCurve, ["2024-05-08", "1024-05-08"], HTTPStatus.NO_CONTENT),
+        (TaggedInstanceCurve, ["2024-05-08", "1024-05-08"], HTTPStatus.NOT_FOUND),
+        (TaggedCurve, ["1024-05-08"], HTTPStatus.NO_CONTENT),
+        (TaggedCurve, ["1024-05-08"], HTTPStatus.NOT_FOUND),
+        (InstanceCurve, ["2024-05-08", "1024-05-08"], HTTPStatus.NO_CONTENT),
+        (InstanceCurve, ["2024-05-08", "1024-05-08"], HTTPStatus.NOT_FOUND)
+    ]
+)
+def test_curve_get_data_range__empty(dummy_curve_id, curve_class, method_args, empty_status_code):
+    # arrange
+    mock_session = SessionMock(resp=RangeResponseMock(empty_status_code, None, None), config_file=CONFIG_FILE)
+    ts = curve_class(dummy_curve_id, metadata=None, session=mock_session)
+
+    # act & assert
+    assert ts.get_data_range(*method_args) is None
+
 
 @pytest.mark.parametrize("range_begin,range_end", [("2024-05-08T00:00:00+02:00", "2024-05-11T22:00:00+02:00"), (None, None)])
 def test_instance_curve_get_data_range(dummy_curve_id, range_begin, range_end):
@@ -29,26 +69,6 @@ def test_instance_curve_get_data_range(dummy_curve_id, range_begin, range_end):
     assert range.end == Range.parse_datetime(range_end, tz)
 
 
-def test_instance_curve_get_data_range__exception(dummy_curve_id):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(HTTPStatus.INTERNAL_SERVER_ERROR, None, None), config_file=CONFIG_FILE)
-    ts = InstanceCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    with pytest.raises(CurveException):
-        _ = ts.get_data_range("2024-05-08")
-
-
-@pytest.mark.parametrize("empty_status_code", [HTTPStatus.NO_CONTENT, HTTPStatus.NOT_FOUND])
-def test_instance_curve_get_data_range__empty(dummy_curve_id, empty_status_code):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(empty_status_code, None, None), config_file=CONFIG_FILE)
-    ts = InstanceCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    assert ts.get_data_range("2024-05-08", date_to="1024-05-08") is None
-
-
 @pytest.mark.parametrize("range_begin,range_end", [("2024-05-08T00:00:00+02:00", "2024-05-11T22:00:00+02:00"), (None, None)])
 def test_tagged_curve_get_data_range(dummy_curve_id, range_begin, range_end):
     # arrange
@@ -67,26 +87,6 @@ def test_tagged_curve_get_data_range(dummy_curve_id, range_begin, range_end):
     assert mock_session.call_args == ["GET", "rtsp://test.host", f"/api/series/tagged/{dummy_curve_id}/range?tag={tag}&from={param_from}&to={param_to}"]
     assert range.begin == Range.parse_datetime(range_begin, tz)
     assert range.end == Range.parse_datetime(range_end, tz)
-
-
-def test_tagged_curve_get_data_range__exception(dummy_curve_id):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(HTTPStatus.INTERNAL_SERVER_ERROR, None, None), config_file=CONFIG_FILE)
-    ts = TaggedCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    with pytest.raises(CurveException):
-        _ = ts.get_data_range()
-
-
-@pytest.mark.parametrize("empty_status_code", [HTTPStatus.NO_CONTENT, HTTPStatus.NOT_FOUND])
-def test_tagged_curve_get_data_range__empty(dummy_curve_id, empty_status_code):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(empty_status_code, None, None), config_file=CONFIG_FILE)
-    ts = TaggedCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    assert ts.get_data_range(date_to="1024-05-08") is None
 
 
 @pytest.mark.parametrize("range_begin,range_end", [("2024-05-08T00:00:00+02:00", "2024-05-11T22:00:00+02:00"), (None, None)])
@@ -111,26 +111,6 @@ def test_tagged_instance_curve_get_data_range(dummy_curve_id, range_begin, range
     assert range.end == Range.parse_datetime(range_end, tz)
 
 
-def test_tagged_instance_curve_get_data_range__exception(dummy_curve_id):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(HTTPStatus.INTERNAL_SERVER_ERROR, None, None), config_file=CONFIG_FILE)
-    ts = TaggedInstanceCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    with pytest.raises(CurveException):
-        _ = ts.get_data_range("2024-05-08")
-
-
-@pytest.mark.parametrize("empty_status_code", [HTTPStatus.NO_CONTENT, HTTPStatus.NOT_FOUND])
-def test_tagged_instance_curve_get_data_range__empty(dummy_curve_id, empty_status_code):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(empty_status_code, None, None), config_file=CONFIG_FILE)
-    ts = TaggedInstanceCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    assert ts.get_data_range("2024-05-08", date_to="1024-05-08") is None
-
-
 @pytest.mark.parametrize("range_begin,range_end", [("2024-05-08T00:00:00+02:00", "2024-05-11T22:00:00+02:00"), (None, None)])
 def test_timeseries_curve_get_data_range(dummy_curve_id, range_begin, range_end):
     # arrange
@@ -148,26 +128,6 @@ def test_timeseries_curve_get_data_range(dummy_curve_id, range_begin, range_end)
     assert mock_session.call_args == ["GET", "rtsp://test.host", f"/api/series/{dummy_curve_id}/range?from={param_from}&to={param_to}"]
     assert range.begin == Range.parse_datetime(range_begin, tz)
     assert range.end == Range.parse_datetime(range_end, tz)
-
-
-def test_timeseries_curve_get_data_range__exception(dummy_curve_id):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(HTTPStatus.INTERNAL_SERVER_ERROR, None, None), config_file=CONFIG_FILE)
-    ts = TimeSeriesCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    with pytest.raises(CurveException):
-        _ = ts.get_data_range()
-
-
-@pytest.mark.parametrize("empty_status_code", [HTTPStatus.NO_CONTENT, HTTPStatus.NOT_FOUND])
-def test_timeseries_curve_get_data_range__empty(dummy_curve_id, empty_status_code):
-    # arrange
-    mock_session = SessionMock(resp=RangeResponseMock(empty_status_code, None, None), config_file=CONFIG_FILE)
-    ts = TimeSeriesCurve(dummy_curve_id, metadata=None, session=mock_session)
-
-    # act & assert
-    assert ts.get_data_range(date_to="1024-05-08") is None
 
 
 @patch("volue_insight_timeseries.curves.InstanceCurve.get_issue_dates")

@@ -1,4 +1,5 @@
 from past.types import basestring
+from datetime import datetime, date, timedelta
 import warnings
 
 from . import util
@@ -854,6 +855,32 @@ class InstanceCurve(BaseCurve):
             return result
 
         return util.Range.from_dict(result, tz_name=output_time_zone)
+
+    def get_issue_dates(self, issue_date_from=None, issue_date_to=None) -> list[str]:
+        """
+        GET all (un-ordered) issue dates from this instance curve
+        """
+        # arbitrary default days for issue_date_from and issue_date_to
+        issue_date_from = issue_date_from or "1900-01-01"
+        issue_date_to = issue_date_to or (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
+
+        instance_lst = self.search_instances(issue_date_from=issue_date_from, issue_date_to=issue_date_to)
+        issue_date_lst = [instance.issue_date for instance in instance_lst]
+
+        return issue_date_lst
+
+    def get_curve_data_range(self, issue_date_from=None, issue_date_to=None) -> util.Range:
+        """
+        Find the data range for a list of instances within the issue_date_from and issue_date_to.
+        If the input parameters are empty, the range would be the curve's range.
+        """
+        issue_date_lst = self.get_issue_dates(issue_date_from, issue_date_to)
+        # in-place sorted
+        issue_date_lst.sort(key=lambda date: datetime.fromisoformat(date))
+
+        start_range = self.get_data_range(issue_date_lst[0])
+        end_range = self.get_data_range(issue_date_lst[-1])
+        return util.Range(start_range.begin, end_range.end)
 
 
 class TaggedInstanceCurve(BaseCurve):

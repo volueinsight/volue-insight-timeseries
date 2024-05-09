@@ -113,7 +113,7 @@ class Session(object):
             auth_urlbase = AUTH_URLBASE
         self.auth = auth.OAuth(self, client_id, client_secret, auth_urlbase)
 
-    def get_curve(self, id=None, name=None):
+    def get_curve(self, id=None, name=None) -> curves.BaseCurve:
         """Getting a curve object
 
         Return a curve object of the correct type.  Name should be specified.

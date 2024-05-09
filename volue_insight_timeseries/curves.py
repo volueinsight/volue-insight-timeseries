@@ -135,7 +135,7 @@ class TimeSeriesCurve(BaseCurve):
 
         Returns
         -------
-        :class:`volue_insight_timeseries.util.TS` object
+        :class:`volue_insight_timeseries.util.TS` object or None
         """
 
         args = []
@@ -151,15 +151,53 @@ class TimeSeriesCurve(BaseCurve):
         return util.TS(input_dict=result, curve_type=util.TIME_SERIES)
 
     def get_data_range(self, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
-        """
-        GET data range from a timeseries curve
+        """ Retrieves a range of data from a Time Series curve
+
+        This method fetches a range of data from the curve between two timestamps. It's mainly used for determining
+        the extent of data available within a specified period. This function returns a range object, which includes
+        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
+        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+
+
+        Parameters
+        ----------
+
+        date_from : time-stamp, optional
+            Start date (and time) of the data range to be fetched. If not provided, it defaults to the earliest data
+            point available on the curve. The timestamp can be provided in any of these formats:
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        date_to : time-stamp, optional
+            End date (and time) of the data range to be fetched. Like `date_from`, this can be provided in the same
+            types. End dates are always exclusive, meaning the data returned stops just before this timestamp. The 
+            timestamp can be provided in any of these formats:
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        output_time_zone : str, optional
+            Time zone for the timestamps returned in the range object. Specifying this changes the timezone
+            of the output data without affecting the underlying data stored in the time series. This can be
+            useful for presentation or further analysis purposes. Time zone conversion is handled post-fetch,
+            ensuring that the data range calculations are timezone-agnostic.
+
+        Returns
+        -------
+        :class:`volue_insight_timeseries.util.Range` object or None
+
+        Examples
+        --------
+        To fetch the data range for April 2024 in UTC:
+        >>> curve.get_data_range(date_from='2024-04-01', date_to='2024-05-01', output_time_zone='UTC')
         """
 
         args = []
         self._add_from_to(args, date_from, date_to)
         astr = '?{}'.format('&'.join(args)) if len(args) > 0 else ''
         url = '/api/series/{}/range{}'.format(self.id, astr)
-        
+
         result = self._load_data(url, 'Failed to load curve date range')
 
         if result is None:
@@ -268,7 +306,7 @@ class TaggedCurve(BaseCurve):
         else:
             if isinstance(tag, basestring):
                 unwrap = True
-            args=[util.make_arg('tag', tag)]
+            args = [util.make_arg('tag', tag)]
         self._add_from_to(args, data_from, data_to)
         self._add_functions(args, time_zone, filter, function, frequency, output_time_zone)
         astr = '&'.join(args)
@@ -420,7 +458,7 @@ class InstanceCurve(BaseCurve):
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower())]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower())]
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
         if with_data:
             self._add_from_to(args, data_from, data_to, prefix='data_')
@@ -528,8 +566,8 @@ class InstanceCurve(BaseCurve):
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower()),
-              util.make_arg('issue_date', issue_date)]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower()),
+                util.make_arg('issue_date', issue_date)]
         if with_data:
             self._add_from_to(args, data_from, data_to)
             self._add_functions(args, time_zone, filter, function, frequency, output_time_zone)
@@ -637,7 +675,7 @@ class InstanceCurve(BaseCurve):
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower())]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower())]
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
         if with_data:
             self._add_from_to(args, data_from, data_to, prefix='data_')
@@ -848,9 +886,9 @@ class InstanceCurve(BaseCurve):
         self._add_from_to(args, date_from, date_to)
         astr = "&".join(args)
         url = '/api/instances/{}/range?{}'.format(self.id, astr)
-        
+
         result = self._load_data(url, 'Failed to load instance date range')
-        
+
         if result is None:
             return result
 
@@ -1024,7 +1062,7 @@ class TaggedInstanceCurve(BaseCurve):
         """
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower())]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower())]
         if tags is not None:
             args.append(util.make_arg('tag', tags))
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
@@ -1146,8 +1184,8 @@ class TaggedInstanceCurve(BaseCurve):
 
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower()),
-              util.make_arg('issue_date', issue_date)]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower()),
+                util.make_arg('issue_date', issue_date)]
         unwrap = False
         if tag is None:
             unwrap = True
@@ -1281,7 +1319,7 @@ class TaggedInstanceCurve(BaseCurve):
 
         if only_accessible is not None:
             warnings.warn("only_accessible parameter will be removed soon.", FutureWarning, stacklevel=2)
-        args=[util.make_arg('with_data', '{}'.format(with_data).lower())]
+        args = [util.make_arg('with_data', '{}'.format(with_data).lower())]
         if tags is not None:
             args.append(util.make_arg('tag', tags))
         self._add_from_to(args, issue_date_from, issue_date_to, prefix='issue_date_')
@@ -1493,13 +1531,14 @@ class TaggedInstanceCurve(BaseCurve):
             return result
         return util.TS(input_dict=result, curve_type=util.TAGGED_INSTANCES)
 
-    def get_data_range(self, issue_date, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
+    def get_data_range(self, issue_date, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Optional[
+        util.Range]:
         """
         GET data range for an instance from an instance curve
         """
         if not issue_date:
             raise ValueError("issue_date is required for data range endpoint")
-        args=[util.make_arg('issue_date', issue_date)]
+        args = [util.make_arg('issue_date', issue_date)]
         if tag:
             args.append(util.make_arg('tag', tag))
         self._add_from_to(args, date_from, date_to)

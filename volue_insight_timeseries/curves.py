@@ -171,11 +171,7 @@ class TimeSeriesCurve(BaseCurve):
 
         date_to : time-stamp, optional
             End date (and time) of the data range to be fetched. Like `date_from`, this can be provided in the same
-            types. End dates are always exclusive, meaning the data returned stops just before this timestamp. The 
-            timestamp can be provided in any of these formats:
-            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
-            * pandas.Timestamp object
-            * datetime.datetime object
+            types.
 
         output_time_zone : str, optional
             Time zone for the timestamps returned in the range object. Specifying this changes the timezone
@@ -191,6 +187,11 @@ class TimeSeriesCurve(BaseCurve):
         --------
         To fetch the data range for April 2024 in UTC:
         >>> curve.get_data_range(date_from='2024-04-01', date_to='2024-05-01', output_time_zone='UTC')
+        Range(begin=datetime.datetime(2024, 4, 10, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), end=datetime.datetime(2024, 4, 30, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')))
+
+        In case the data range does not exist for January 1900:
+        >>> curve.get_data_range(date_from='1900-01-01', date_to='1900-02-01', output_time_zone='UTC')
+        None
         """
 
         args = []
@@ -320,8 +321,58 @@ class TaggedCurve(BaseCurve):
         return res
 
     def get_data_range(self, tag=None, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
-        """
-        GET data range for an instance from a tagged curve
+        """ Retrieves a range of data from a TAGGED curve
+
+        This method fetches a range of data from the curve between two timestamps with given tag. It's mainly used for 
+        determining the extent of data available within a specified period. This function returns a range object, which includes
+        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
+        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+
+
+        Parameters
+        ----------
+
+        tag: str or list, optional
+            tag or tags to get the data for. If omitted, the default
+            tag is returned.
+
+        date_from : time-stamp, optional
+            Start date (and time) of the data range to be fetched. If not provided, it defaults to the earliest data
+            point available on the curve. The timestamp can be provided in any of these formats:
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        date_to : time-stamp, optional
+            End date (and time) of the data range to be fetched. Like `date_from`, this can be provided in the same
+            types. The timestamp can be provided in any of these formats:
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        output_time_zone : str, optional
+            Time zone for the timestamps returned in the range object. Specifying this changes the timezone
+            of the output data without affecting the underlying data stored in the time series. This can be
+            useful for presentation or further analysis purposes. Time zone conversion is handled post-fetch,
+            ensuring that the data range calculations are timezone-agnostic.
+
+        Returns
+        -------
+        :class:`volue_insight_timeseries.util.Range` object or None
+
+        Examples
+        --------
+        To fetch the data range for April 2024 in UTC:
+        >>> curve.get_data_range(date_from='2024-04-01', date_to='2024-05-01', output_time_zone='UTC')
+        Range(begin=datetime.datetime(2024, 4, 10, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), end=datetime.datetime(2024, 4, 30, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')))
+
+        To fetch the data range for April 2024 with "abc" tag in UTC:
+        >>> curve.get_data_range(tag="abc", date_from='2024-04-01', date_to='2024-05-01', output_time_zone='UTC')
+        Range(begin=datetime.datetime(2024, 4, 10, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), end=datetime.datetime(2024, 4, 30, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')))
+
+        In case the data range does not exist for January 1900:
+        >>> curve.get_data_range(date_from='1900-01-01', date_to='1900-02-01', output_time_zone='UTC')
+        None
         """
         args = []
         if tag:

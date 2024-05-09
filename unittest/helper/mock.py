@@ -8,7 +8,7 @@ class RangeResponseMock:
         self.range_resp = {"begin": range_begin, "end": range_end}
         self.status_code = status_code
         self.content = b""
-    
+
     def json(self) -> dict:
         return self.range_resp
 

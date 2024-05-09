@@ -345,10 +345,7 @@ class TaggedCurve(BaseCurve):
 
         date_to : time-stamp, optional
             End date (and time) of the data range to be fetched. Like `date_from`, this can be provided in the same
-            types. The timestamp can be provided in any of these formats:
-            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
-            * pandas.Timestamp object
-            * datetime.datetime object
+            types.
 
         output_time_zone : str, optional
             Time zone for the timestamps returned in the range object. Specifying this changes the timezone
@@ -927,9 +924,54 @@ class InstanceCurve(BaseCurve):
         return util.TS(input_dict=result, curve_type=util.INSTANCES)
 
     def get_data_range(self, issue_date, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
-        """
-        GET data range for an instance from an instance curve
-        Note that issue_date is a required parameter
+        """ Retrieves a range of data from an INSTANCE curves for a specific issue_date
+
+        This method fetches a range of data from the curve between two timestamps. It's mainly used for determining
+        the extent of data available within a specified period. This function returns a range object, which includes
+        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
+        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+
+        Parameters
+        ----------
+        issue_date: time-stamp
+            Time-stamp representing the issue date to get data for.
+            The timestamp can be provided in any of the following types :
+
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        date_from : time-stamp, optional
+            Start date (and time) of the data range to be fetched. If not provided, it defaults to the earliest data
+            point available on the curve. Like `issue_date`, this can be provided in the same types.
+
+        date_to : time-stamp, optional
+            End date (and time) of the data range to be fetched. Like `issue_date`, this can be provided in the same
+            types.
+
+        output_time_zone : str, optional
+            Time zone for the timestamps returned in the range object. Specifying this changes the timezone
+            of the output data without affecting the underlying data stored in the time series. This can be
+            useful for presentation or further analysis purposes. Time zone conversion is handled post-fetch,
+            ensuring that the data range calculations are timezone-agnostic.
+
+        Returns
+        -------
+        :class:`volue_insight_timeseries.util.Range` object or None
+
+        Examples
+        --------
+        To fetch the data range for April 2024 in UTC:
+        >>> curve.get_data_range('2023-12-16T13:45:00Z', date_from='2024-04-01', date_to='2024-05-01', output_time_zone='UTC')
+        Range(begin=datetime.datetime(2024, 4, 10, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), end=datetime.datetime(2024, 4, 30, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')))
+
+        In case the data range does not exist for January 1900 but issue exists:
+        >>> curve.get_data_range('1900-01-04T00:00:00Z', date_from='1900-01-01', date_to='1900-02-01', output_time_zone='UTC')
+        Range(begin=None, end=None)
+
+        In case issue does not exists:
+        >>> curve.get_data_range('3000-04-05T00:45:00Z', date_from='3000-04-01', date_to='3000-05-01', output_time_zone='UTC')
+        None
         """
         if not issue_date:
             raise ValueError("issue_date is required for data range endpoint")
@@ -946,8 +988,35 @@ class InstanceCurve(BaseCurve):
         return util.Range.from_dict(result, tz_name=output_time_zone)
 
     def get_issue_dates(self, issue_date_from=None, issue_date_to=None) -> list[str]:
-        """
-        GET all (un-ordered) issue dates from this instance curve
+        """ Retrieves a list of issue dates from an INSTANCE curves
+
+        This method fetches a list of issues between two timestamps. It's mainly used in order to
+        get all issue dates within specied timestamps
+
+        Parameters
+        ----------
+        issue_date_from: time-stamp, optional
+            The starting timestamp for fetching issue dates. This can be:
+            * datestring in format '%Y-%M-%DT%h:%m:%sZ', e.g., '2023-01-01' or '2023-12-16T13:45:00Z'
+            * pandas.Timestamp object
+            * datetime.datetime object
+
+        issue_date_to : time-stamp, optional
+            The ending timestamp up to which issue dates are fetched, in the same formats as `issue_date_from`.
+
+        Returns
+        -------
+        list[str]
+            A list of issue dates as strings usually in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ).
+
+        Example
+        -------
+        >>> get_issue_dates('2023-01-01T00:00:00Z', '2023-12-31T00:00:00Z')
+        ['2023-01-01T00:00:00Z', '2023-02-01T00:00:00Z', ..., '2023-12-01T00:00:00Z']
+
+        Notes
+        -------
+        If both parameters are None, the method will return the complete list of issue dates available.
         """
         # arbitrary default days for issue_date_from and issue_date_to
         issue_date_from = issue_date_from or "1900-01-01"
@@ -959,9 +1028,22 @@ class InstanceCurve(BaseCurve):
         return issue_date_lst
 
     def get_curve_data_range(self, issue_date_from=None, issue_date_to=None) -> util.Range:
-        """
-        Find the data range for a list of instances within the issue_date_from and issue_date_to.
-        If the input parameters are empty, the range would be the curve's range.
+        """ 
+        Finds the data range for a list of issues within the specified issue dates.
+        If the input parameters are empty, the range would be the curve's entire available range.
+
+        Parameters:
+        ----------
+        issue_date_from : str or pandas.Timestamp or datetime.datetime, optional
+            The starting date for the range query.
+        
+        issue_date_to : str or pandas.Timestamp or datetime.datetime, optional
+            The ending date for the range query.
+
+        Returns:
+        -------
+        util.Range
+            The beginning and end of the data range for the specified issue dates.
         """
         issue_date_lst = self.get_issue_dates(issue_date_from, issue_date_to)
         # in-place sorted

@@ -7,6 +7,7 @@ The comparison can be performed for any region
 import volue_insight_timeseries
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 ############################################
 # Insert the path to your config file here!

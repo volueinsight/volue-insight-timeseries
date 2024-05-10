@@ -70,10 +70,10 @@ for r in regions:
 
         # Remove empty elements at start/end of time series
         i = 0
-        l = len(frag.points)
-        while i < l and frag.points[i][1] is None:
+        frag_len = len(frag.points)
+        while i < frag_len and frag.points[i][1] is None:
             i += 1
-        j = l
+        j = frag_len
         while j > i and frag.points[j-1][1] is None:
             j -= 1
         frag.points = frag.points[i:j]

@@ -42,7 +42,7 @@ if not os.path.isdir(data_dir):
     os.mkdir(data_dir)
 
 # Create a session to Connect to Volue Insight API
-session = volue_insight_timeseries.Session(config_file=config_file)
+session = volue_insight_timeseries.Session(config_file=my_config_file)
 
 # loop through the given curves
 for c, curve_name in enumerate(curve_names):

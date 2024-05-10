@@ -7,6 +7,7 @@ import calendar
 import dateutil.parser
 import pandas as pd
 import numpy as np
+import warnings
 from past.types import basestring
 from dataclasses import dataclass
 from typing import Optional, Dict
@@ -27,29 +28,38 @@ TAGGED_INSTANCES = 'TAGGED_INSTANCES'
 
 # Frequency mapping from TS to Pandas
 _TS_FREQ_TABLE = {
-    'Y': 'AS',
+    'Y': 'YS',
     'S': '2QS',
     'Q': 'QS',
     'M': 'MS',
     'W': 'W-MON',
-    'H12': '12H',
-    'H6': '6H',
-    'H3': '3H',
-    'MIN30': '30T',
-    'MIN15': '15T',
-    'MIN5': '5T',
-    'MIN': 'T',
+    'H12': '12h',
+    'H6': '6h',
+    'H3': '3h',
+    'MIN30': '30min',
+    'MIN15': '15min',
+    'MIN5': '5min',
+    'MIN': 'min',
 }
-# Mapping from Pandas to TS is built from map above, with some additions
+
+# Mapping from various versions of Pandas to TS is built from map above,
+# with some additions to support older versions of pandas
 _PANDAS_FREQ_TABLE = {
+    'YS-JAN': 'Y',
     'AS-JAN': 'Y',
-    'YS': 'Y',
+    'AS': 'Y',
     '2QS-JAN': 'S',
     'QS-JAN': 'Q',
-    'min': 'MIN',
+    '12H': 'H12',
+    '6H': 'H6',
+    '3H': 'H3',
+    '30T': 'MIN30',
+    '15T': 'MIN15',
+    '5T': 'MIN5',
+    'T': 'MIN',
 }
-for k, v in _TS_FREQ_TABLE.items():
-    _PANDAS_FREQ_TABLE[v] = k
+for ts_freq, pandas_freq in _TS_FREQ_TABLE.items():
+    _PANDAS_FREQ_TABLE[pandas_freq.upper()] = ts_freq
 
 
 class CurveException(Exception):
@@ -167,6 +177,8 @@ class TS(object):
     def _rev_map_freq(frequency):
         if frequency.upper() in _PANDAS_FREQ_TABLE:
             frequency = _PANDAS_FREQ_TABLE[frequency.upper()]
+        else:
+            warnings.warn(f"Frequency is not supported: '{frequency}'", FutureWarning, stacklevel=2)
         return frequency
 
     @staticmethod

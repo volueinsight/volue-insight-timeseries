@@ -1,5 +1,5 @@
 from volue_insight_timeseries.util import TS
-
+import pandas as pd
 
 def test_to_pandas_2038(ts4):
     pd_series = ts4.to_pandas()
@@ -9,6 +9,28 @@ def test_to_pandas_2038(ts4):
 def test_to_pandas(ts1):
     pd_series = ts1.to_pandas()
     assert len(pd_series.index) == len(ts1.points)
+
+def test_to_pandas_freq_table_compatibility(ts5):
+    # Frequency mapping from TS to all supported versions of Pandas
+    ts2pd_freq = {
+        'Y': ['YS-JAN', 'AS-JAN'],
+        'S': ['2QS-JAN'],
+        'Q': ['QS-JAN'],
+        'M': ['MS'],
+        'W': ['W-MON'],
+        'H12': ['12h', '12H'],
+        'H6': ['6h', '6H'],
+        'H3': ['3h', '3H'],
+        'MIN30': ['30min', '30T'],
+        'MIN15': ['15min', '15T'],
+        'MIN5': ['5min', '5T'],
+        'MIN': ['min', 'T'],
+    }
+
+    for ts_original_freq, pandas_original_freq in ts2pd_freq.items():
+        ts5.frequency = ts_original_freq
+        pd_series_freq = ts5.to_pandas().index.freqstr
+        assert pd_series_freq in pandas_original_freq
 
 
 def test_from_pandas(ts1):
@@ -22,6 +44,31 @@ def test_from_pandas(ts1):
     for dp1, dp2 in zip(re_ts.points, ts1.points):
         assert dp1 == dp2
 
+def test_from_pandas_freq_table_compatibility(ts5):
+    # Frequency mapping from current version of Pandas
+    # NOTE: older version of Pandas (1.5.2) accepts
+    # new freq name vales but outputs old freq name values
+    # so it's enough to use the new freq names
+    pd2ts_freq = {
+        'YS': 'Y',
+        '2QS': 'S',
+        'QS': 'Q',
+        'MS': 'M',
+        'W-MON': 'W',
+        '12h': 'H12',
+        '6h': 'H6',
+        '3h': 'H3',
+        '30min': 'MIN30',
+        '15min': 'MIN15',
+        '5min': 'MIN5',
+        'min': 'MIN',
+    }
+ 
+    for pandas_original_freq, ts_original_freq in pd2ts_freq.items():
+        idx = pd.DatetimeIndex(["2024-01-01 00:00:00+02:00"], freq=pandas_original_freq)
+        pd_series_freq = pd.Series(name="test pd", index=idx, data=[220])
+        re_ts5_freq = TS.from_pandas(pd_series_freq).frequency
+        assert re_ts5_freq == ts_original_freq
 
 def test_sum_ts(ts1, ts2, ts3):
     points = [[0, 420], [2678400000, 420],

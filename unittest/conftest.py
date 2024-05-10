@@ -63,6 +63,13 @@ def ts4():
               time_zone='CET', curve_type=TIME_SERIES, points=points)
 
 
+@pytest.fixture
+def ts5():
+    points = [[0, 220]]
+    return TS(id=5, name='Test frequency', frequency='D',
+              time_zone='CET', curve_type=TIME_SERIES, points=points)
+
+
 #
 # Fixtures to set up the session for the rest of the tests
 # Returns both a session and a request mock linked into the session.

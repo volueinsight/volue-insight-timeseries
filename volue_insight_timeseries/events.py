@@ -1,3 +1,4 @@
+import contextlib
 import json
 import time
 
@@ -58,10 +59,8 @@ class EventListener:
                             event.curve = self.curve_cache[event.id]
                         self.queue.put(event)
                         if sse_event.retry is not None:
-                            try:
+                            with contextlib.suppress(ValueError, TypeError):
                                 self.retry = int(sse_event.retry)
-                            except:
-                                pass
                         if self.do_shutdown:
                             break
                     # Session was closed by server/network, wait for retry before looping.
@@ -107,7 +106,7 @@ class DefaultEvent(object):
         self._raw_event = sse_event
         try:
             self.json_data = json.loads(sse_event.data)
-        except:
+        except (json.JSONDecodeError, TypeError):
             self.json_data = None
 
 

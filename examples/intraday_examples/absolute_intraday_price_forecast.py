@@ -6,7 +6,6 @@ https://wattsight-wapi-python.readthedocs-hosted.com/en/latest/
 """
 
 import volue_insight_timeseries
-import pandas as pd
 import matplotlib.pyplot as plt
 
 ############################################

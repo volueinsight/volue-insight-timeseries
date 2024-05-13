@@ -61,11 +61,11 @@ intraday_price_forecast = intraday_price_forecast_wapi.to_pandas()
 # The fetched data contains our latest price forecast for the intraday market.
 
 # Plot curve using the integrated plot function of pandas.
-latest_intraday_price_forecast.plot(color='blue', marker='o', label='latest')
+intraday_price_forecast.plot(color='blue', marker='o', label='latest')
 
 # The name of the pandas.Series includes the point of time the forecast was made.
 print('Name of the pandas.Series containing the issue_date: {}'.format(
-latest_intraday_price_forecast.name))
+intraday_price_forecast.name))
 
 # Show the figure.
 plt.ylabel('Price/€')

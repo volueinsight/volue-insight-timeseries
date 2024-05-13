@@ -924,7 +924,7 @@ class InstanceCurve(BaseCurve):
         return util.TS(input_dict=result, curve_type=util.INSTANCES)
 
     def get_data_range(self, issue_date, date_from=None, date_to=None, output_time_zone=None) -> Optional[util.Range]:
-        """ Retrieves a range of data from an INSTANCE curves for a specific issue_date
+        """ Retrieves a range of data from an INSTANCE curve for a specific issue_date
 
         This method fetches a range of data from the curve between two timestamps. It's mainly used for determining
         the extent of data available within a specified period. This function returns a range object, which includes

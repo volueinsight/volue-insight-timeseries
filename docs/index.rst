@@ -1,4 +1,4 @@
-.. wapi
+.. volue_insight_timeseries
 
 
 .. _index_wsgrb:

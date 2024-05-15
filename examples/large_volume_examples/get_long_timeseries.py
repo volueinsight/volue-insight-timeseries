@@ -65,7 +65,7 @@ for r in regions:
         if end_frag > end_date:
             end_frag = end_date
 
-        # Fetch fragment data from WAPI
+        # Fetch fragment data from the API
         frag = curve.get_data(data_from=start_frag, data_to=end_frag)
 
         # Remove empty elements at start/end of time series

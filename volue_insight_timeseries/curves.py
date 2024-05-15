@@ -155,8 +155,9 @@ class TimeSeriesCurve(BaseCurve):
 
         This method fetches a range of data from the curve between two timestamps. It's mainly used for determining
         the extent of data available within a specified period. This function returns a range object, which includes
-        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
-        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+        the earliest and latest timestamps of data entries that fall within the given range. Please note that this includes
+        data that might fall outside of actual data access. The method allows specifying an output time zone to 
+        standardize the time values returned, irrespective of the curve's original time zone.
 
 
         Parameters
@@ -325,8 +326,9 @@ class TaggedCurve(BaseCurve):
 
         This method fetches a range of data from the curve between two timestamps with given tag. It's mainly used for 
         determining the extent of data available within a specified period. This function returns a range object, which includes
-        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
-        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+        the earliest and latest timestamps of data entries that fall within the given range. Please note that this includes
+        data that might fall outside of actual data access. The method allows specifying an output time zone to standardize the
+        time values returned, irrespective of the curve's original time zone.
 
 
         Parameters
@@ -928,8 +930,9 @@ class InstanceCurve(BaseCurve):
 
         This method fetches a range of data from the curve between two timestamps. It's mainly used for determining
         the extent of data available within a specified period. This function returns a range object, which includes
-        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
-        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+        the earliest and latest timestamps of data entries that fall within the given range. Please note that this includes
+        data that might fall outside of actual data access. The method allows specifying an output time zone to
+        standardize the time values returned, irrespective of the curve's original time zone.
 
         Parameters
         ----------
@@ -1670,8 +1673,9 @@ class TaggedInstanceCurve(BaseCurve):
 
         This method fetches a range of data from the curve between two timestamps with given tag. It's mainly used for determining
         the extent of data available within a specified period. This function returns a range object, which includes
-        the earliest and latest timestamps of data entries that fall within the given range. The method allows specifying
-        an output time zone to standardize the time values returned, irrespective of the curve's original time zone.
+        the earliest and latest timestamps of data entries that fall within the given range. Please note that this includes
+        data that might fall outside of actual data access. The method allows specifying an output time zone to standardize the 
+        time values returned, irrespective of the curve's original time zone.
 
         Parameters
         ----------

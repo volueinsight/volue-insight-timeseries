@@ -8,7 +8,7 @@ mergeable:
         must_include:
           regex: "^.{0,62}$"
           message: |
-            Title should be at most 62 characters long
+            Title should be at most 75 characters long
       - do: title
         must_include:
           regex: '^(feat|fix|refactor|revert|ci|build|docs|chore)(\([\w\d-]+\))?!?: (\S.+[^.?!])$'

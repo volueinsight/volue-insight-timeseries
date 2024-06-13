@@ -64,11 +64,11 @@ class Session(object):
     """
 
     def __init__(self, urlbase=None, config_file=None, client_id=None, client_secret=None,
-                 auth_urlbase=None, timeout=None, retry_update_auth=False):
+                 auth_urlbase=None, timeout=None, retry_update_auth=False, custom_session=None):
         self.urlbase = API_URLBASE
         self.auth = None
         self.timeout = TIMEOUT
-        self._session = requests.Session()
+        self._session = custom_session or requests.Session()
         self.retry_update_auth = retry_update_auth
         if config_file is not None:
             self.read_config_file(config_file)
@@ -413,9 +413,9 @@ class Session(object):
                                                                response.content.decode()))
 
     _curve_types = {
-        util.TIME_SERIES:      curves.TimeSeriesCurve,
-        util.TAGGED:           curves.TaggedCurve,
-        util.INSTANCES:        curves.InstanceCurve,
+        util.TIME_SERIES: curves.TimeSeriesCurve,
+        util.TAGGED: curves.TaggedCurve,
+        util.INSTANCES: curves.InstanceCurve,
         util.TAGGED_INSTANCES: curves.TaggedInstanceCurve,
     }
 
@@ -462,11 +462,11 @@ class Session(object):
             else:
                 self.auth.validate_auth()
                 headers.update(self.auth.get_headers(databytes))
-        
+
         return headers
-    
+
     def send_data_request(self, req_type, urlbase, url, data=None, rawdata=None, headers=None, authval=None,
-                     stream=False, retries=RETRY_COUNT):
+                          stream=False, retries=RETRY_COUNT):
         if not urlbase:
             urlbase = self.urlbase
         longurl = urljoin(urlbase, url)
@@ -489,7 +489,7 @@ class Session(object):
         if (timeout is not None or (500 <= res.status_code < 600) or res.status_code == 408) and retries > 0:
             if RETRY_DELAY > 0:
                 time.sleep(RETRY_DELAY)
-            return self.send_data_request(req_type, urlbase, url, data, rawdata, headers, authval, stream, retries-1)
+            return self.send_data_request(req_type, urlbase, url, data, rawdata, headers, authval, stream, retries - 1)
         if timeout is not None:
             raise timeout
         return res

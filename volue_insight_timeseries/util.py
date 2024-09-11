@@ -39,6 +39,7 @@ _TS_FREQ_TABLE = {
     'MIN15': '15min',
     'MIN5': '5min',
     'MIN': 'min',
+    'D': 'D',
 }
 
 # Mapping from various versions of Pandas to TS is built from map above,
@@ -56,6 +57,7 @@ _PANDAS_FREQ_TABLE = {
     '15T': 'MIN15',
     '5T': 'MIN5',
     'T': 'MIN',
+    'D': 'D',
 }
 for ts_freq, pandas_freq in _TS_FREQ_TABLE.items():
     _PANDAS_FREQ_TABLE[pandas_freq.upper()] = ts_freq

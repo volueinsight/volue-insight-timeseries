@@ -57,7 +57,6 @@ _PANDAS_FREQ_TABLE = {
     '15T': 'MIN15',
     '5T': 'MIN5',
     'T': 'MIN',
-    'D': 'D',
 }
 for ts_freq, pandas_freq in _TS_FREQ_TABLE.items():
     _PANDAS_FREQ_TABLE[pandas_freq.upper()] = ts_freq

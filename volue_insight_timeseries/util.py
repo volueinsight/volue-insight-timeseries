@@ -39,6 +39,7 @@ _TS_FREQ_TABLE = {
     'MIN15': '15min',
     'MIN5': '5min',
     'MIN': 'min',
+    'D': 'D',
 }
 
 # Mapping from various versions of Pandas to TS is built from map above,

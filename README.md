@@ -59,7 +59,9 @@ make the switch.
 * Use [zoneinfo](https://docs.python.org/3/library/zoneinfo.html), not pytz for handling time zone information
 
 ### Example of migrating an existing script
-Assume you want to migrate the script below
+Assume you want to migrate the script below. It is a very simple script to
+highlight things that are changing, not a recommended way to write production
+code.
 
 ```python
 # python 3.9.8
@@ -78,8 +80,8 @@ from wapi.curves import InstanceCurve
 from dotenv import load_dotenv
 
 load_dotenv()
-session = wapi.Session(client_id=(os.getenv('CLIENT_ID')),
-                       client_secret=(os.getenv('CLIENT_SECRET')))
+session = wapi.Session(client_id=(os.environ['CLIENT_ID']),
+                       client_secret=(os.environ['CLIENT_SECRET']))
 
 results = session.search(name="tt no2 con ec00 °c cet min15 f")
 if results:
@@ -112,8 +114,8 @@ from volue_insight_timeseries.curves import InstanceCurve
 from dotenv import load_dotenv
 
 load_dotenv()
-session = vit.Session(client_id=(os.getenv('CLIENT_ID')),
-                      client_secret=(os.getenv('CLIENT_SECRET')))
+session = vit.Session(client_id=(os.environ['CLIENT_ID']),
+                      client_secret=(os.environ['CLIENT_SECRET']))
 
 results = session.search(name="tt no2 con ec00 °c cet min15 f")
 if results:

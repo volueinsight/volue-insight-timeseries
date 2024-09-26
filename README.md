@@ -58,10 +58,80 @@ make the switch.
 * Use Pandas 1.5.0 or newer
 * Use [zoneinfo](https://docs.python.org/3/library/zoneinfo.html), not pytz for handling time zone information
 
+### Example of migrating an existing script
+Assume you want to migrate the script below. It is a very simple script to
+highlight things that are changing, not a recommended way to write production
+code.
+
+```python
+# python 3.9.8
+# pip install wapi-python==0.7.15
+# pip install python-dotenv==1.0.1
+#
+# ---
+# .env file contents
+# CLIENT_ID=your-client-id
+# CLIENT_SECRET=your-client-secret
+
+import os
+import wapi
+from wapi.util import TS
+from wapi.curves import InstanceCurve
+from dotenv import load_dotenv
+
+load_dotenv()
+session = wapi.Session(client_id=(os.environ['CLIENT_ID']),
+                       client_secret=(os.environ['CLIENT_SECRET']))
+
+results = session.search(name="tt no2 con ec00 °c cet min15 f")
+if results:
+    instance_curve: InstanceCurve = results[0]
+    data: TS = instance_curve.get_latest(data_to="2030-04-01T04:00Z")
+    print(f"Curve type: {data.curve_type}")
+    print(f"Time zone class of curve data: {type(data.tz)}")
+
+# Output
+# Curve type: INSTANCES
+# Time zone class of curve data: <class 'pytz.tzfile.CET'>
+```
+
+The migrated script is below
+
+```python
+# python 3.9.8
+# pip install volue-insight-timeseries==1.2.0
+# pip install python-dotenv==1.0.1
+#
+# ---
+# .env file contents
+# CLIENT_ID=your-client-id
+# CLIENT_SECRET=your-client-secret
+
+import os
+import volue_insight_timeseries as vit
+from volue_insight_timeseries.util import TS
+from volue_insight_timeseries.curves import InstanceCurve
+from dotenv import load_dotenv
+
+load_dotenv()
+session = vit.Session(client_id=(os.environ['CLIENT_ID']),
+                      client_secret=(os.environ['CLIENT_SECRET']))
+
+results = session.search(name="tt no2 con ec00 °c cet min15 f")
+if results:
+    instance_curve: InstanceCurve = results[0]
+    data: TS = instance_curve.get_latest(data_to="2030-04-01T04:00Z")
+    print(f"Curve type: {data.curve_type}")
+    print(f"Time zone class of curve data: {type(data.tz)}")
+
+# Output
+# Curve type: INSTANCES
+# Time zone class of curve data: <class 'zoneinfo.ZoneInfo'>
+```
 
 ## Copyright (MIT License)
 
-Copyright (c) 2018-2022 Volue Insight AS
+Copyright (c) 2018-2024 Volue Insight AS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
